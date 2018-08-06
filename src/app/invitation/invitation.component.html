@@ -23,7 +23,7 @@
               <h5 class="card-title">{{ event.name }}</h5>
               <p class="card-text">{{ event.venue }}</p>
               <p class="card-text">{{ event.time }}</p>
-              <p class="card-text">
+              <p *ngIf="event.rsvp" class="card-text">
                 <small class="text-muted">
                   You've RSVP'd for {{ event.rsvp }}.
                 </small>

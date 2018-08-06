@@ -58,7 +58,7 @@ export class InvitationService {
   }
 
   rsvp(phone: number, eventId: string, n: number) {
-    const change = {rsvp: this.dbInvitation.rsvp};
+    const change = {rsvp: this.dbInvitation.rsvp || {}};
     change.rsvp[eventId] = n;
     this.afs.doc<DbInvitation>(`invitations/${phone}`).update(change)
     .catch(error => {
