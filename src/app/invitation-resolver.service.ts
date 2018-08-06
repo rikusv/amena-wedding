@@ -29,7 +29,7 @@ import { Invitation } from './invitation';
           if (invitation) {
             return invitation;
           } else {
-            this.router.navigate(['/'], {queryParams: {notFound: true}});
+            this.router.navigate(['/'], {queryParams: {notFound: true, phone: phone}});
             return null;
           }
         })

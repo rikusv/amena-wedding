@@ -12,7 +12,7 @@ export class LandingComponent implements OnInit {
 
   phone: number;
   state: 'inputErrors' | 'loading' | 'notFound' | '';
-  notFound: boolean;
+  notFoundPhone: number;
 
   constructor(
     private router: Router,
@@ -23,6 +23,7 @@ export class LandingComponent implements OnInit {
   ngOnInit() {
     this.route.queryParamMap.subscribe(data => {
       this.state = data.get('notFound') === 'true' ? 'notFound' : '';
+      this.notFoundPhone = Number(data.get('phone'));
     });
     window.addEventListener('load', function() {
       const forms = document.getElementsByClassName('needs-validation');
@@ -44,7 +45,6 @@ export class LandingComponent implements OnInit {
     } else {
       const path = `/invitation/${this.phone}`;
       this.state = 'loading';
-      input.reset();
       this.router.navigate([path]);
     }
   }

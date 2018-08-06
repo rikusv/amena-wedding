@@ -42,8 +42,8 @@
     </ngb-alert>
   </div>
 
-  <ngb-alert *ngIf="state == 'notFound' && phoneInput.pristine" type="warning" [dismissible]="false">
-    No invitation found for mobile number <strong>+{{ phone }}</strong>.
+  <ngb-alert *ngIf="state == 'notFound'" type="warning" [dismissible]="false">
+    No invitation found for mobile number <strong>+{{ notFoundPhone }}</strong>.
   </ngb-alert>
 
 </div>
