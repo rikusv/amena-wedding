@@ -1,0 +1,11 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /invitations/{mobileNumber} {
+      allow get: if true;
+      allow update: if 'rsvp' in request.writeFields && request.writeFields.size() == 1;
+    }
+    match /events/{eventKey} {
+    	allow get: if true;
+    }
+  }
+}
