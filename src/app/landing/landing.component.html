@@ -1,0 +1,49 @@
+<div class="container">
+
+  <div class="jumbotron">
+    <h1 class="display-4">Invitation</h1>
+    <p class="lead">
+      We would love it if you could join us in celebrating our wedding.
+    </p>
+    <footer class="blockquote-footer">Amena and Ferhat</footer>
+    <hr class="my-4">
+
+    <ng-container>
+      <p>
+        Please enter your mobile number (including country code) below to view further details.
+      </p>
+      <form class="needs-validation" novalidate>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">+</span>
+          </div>
+          <input type="tel" pattern="[0-9]*" required class="form-control" placeholder="e.g. 27823456789" name="phone" [(ngModel)]="phone" #phoneInput="ngModel">
+          <div class="input-group-append">
+            <button class="btn btn-outline-primary" type="submit" (click)="fetchInvitation(phoneInput)">
+              Submit
+            </button>
+          </div>
+        </div>
+      </form>
+    </ng-container>
+
+  </div>
+
+  <div *ngIf="state == 'loading'" class="progress">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+
+  <div *ngIf="phoneInput.invalid && (phoneInput.dirty || phoneInput.touched || state == 'inputErrors')">
+    <ngb-alert *ngIf="phoneInput.errors.required" type="warning" [dismissible]="false">
+      Please enter your mobile number.
+    </ngb-alert>
+    <ngb-alert *ngIf="phoneInput.errors.pattern" type="warning" [dismissible]="false">
+      Please enter only numbers.
+    </ngb-alert>
+  </div>
+
+  <ngb-alert *ngIf="state == 'notFound' && phoneInput.pristine" type="warning" [dismissible]="false">
+    No invitation found for mobile number <strong>+{{ phone }}</strong>.
+  </ngb-alert>
+
+</div>
