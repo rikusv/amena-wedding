@@ -14,3 +14,5 @@ Maintain Firestore rules in `firestore.rules`. Deploy rules with `firebase deplo
 ng build --prod
 firebase deploy
 ```
+
+Test production build locally using `npm run prod`.
