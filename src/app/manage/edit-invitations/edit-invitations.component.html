@@ -14,19 +14,19 @@
         </div>
         <input type="text" class="form-control" placeholder="Group" formControlName="group">
       </div>
-      <div class="input-group col-md-6 col-12 my-1" *ngFor="let id of objectKeys(newInvitationForm?.controls.events?.controls)">
+      <div class="input-group col-md-6 col-12 my-1" *ngFor="let event of eventsOnceFormReady()">
         <div class="input-group-prepend">
-          <span class="input-group-text">{{ (eventLookup$ | async)[id].name }}</span>
+          <span class="input-group-text">{{ event.name }}</span>
           <span class="input-group-text bg-light">Max</span>
         </div>
         <ng-container formGroupName="events">
-          <input type="number" class="form-control" [formControlName]="id">
+          <input type="number" class="form-control" [formControlName]="event.id">
         </ng-container>
         <div class="input-group-prepend">
           <span class="input-group-text bg-light">RSVP</span>
         </div>
         <ng-container formGroupName="rsvp">
-          <input type="number" class="form-control" [formControlName]="id">
+          <input type="number" class="form-control" [formControlName]="event.id">
         </ng-container>
       </div>
       <div class="col-md-6 col-12 my-1">

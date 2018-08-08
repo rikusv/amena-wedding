@@ -87,6 +87,13 @@ export class EditInvitationsComponent implements OnInit {
     }
   }
 
+  eventsOnceFormReady() {
+    if (this.newInvitationForm.get('events') &&
+    Object.keys(this.newInvitationForm.get('events').value).length === this.events.length) {
+      return this.events;
+    }
+  }
+
   get phone() { return this.newInvitationForm.get('phone'); }
   get name() { return this.newInvitationForm.get('name'); }
 
