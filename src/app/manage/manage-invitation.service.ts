@@ -70,7 +70,6 @@ export class ManageInvitationService {
       deleted += invitation.delete ? 1 : 0;
       const key = invitation.key;
       delete invitation.key;
-      const change = Object.assign({}, invitation);
       if ((key && key !== invitation.phone) || invitation.delete) {
         batch.delete(
           this.afs.firestore.collection('invitations').doc(key.toString())
@@ -79,12 +78,12 @@ export class ManageInvitationService {
       if (!key || key !== invitation.phone) {
         batch.set(
           this.afs.firestore.collection('invitations').doc(invitation.phone.toString()),
-          change
+          invitation
         );
       } else if (!invitation.delete) {
         batch.update(
           this.afs.firestore.collection('invitations').doc(invitation.phone.toString()),
-          change
+          invitation
         );
       }
     });

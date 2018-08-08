@@ -14,6 +14,7 @@ export class ManageEventService {
   private eventCollection: AngularFirestoreCollection<Event>;
   private events$: Observable<Event[]>;
   public eventLookup$: BehaviorSubject<{[id: string]: Event}> = new BehaviorSubject({});
+  public eventLookup: {[id: string]: Event};
   public events: Event[];
 
   constructor(
@@ -42,6 +43,7 @@ export class ManageEventService {
       events.forEach(event => {
         eventLookup[event.id] = event;
       });
+      this.eventLookup = eventLookup;
       this.eventLookup$.next(eventLookup);
     });
   }
