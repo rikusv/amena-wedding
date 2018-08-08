@@ -93,13 +93,13 @@ export class ManageInvitationService {
       if (updated > 0) {
         this.messageService.sendMessage({
           type: 'success',
-          text: `${updated} invitations updated`
+          text: `${updated} ${updated > 1 ? 'invitations' : 'invitation'} updated`
         });
       }
       if (deleted > 0) {
         this.messageService.sendMessage({
           type: 'warning',
-          text: `${deleted} invitations deleted`
+          text: `${deleted} ${deleted > 1 ? 'invitations' : 'invitation'} deleted`
         });
       }
       return true;
@@ -107,7 +107,9 @@ export class ManageInvitationService {
     .catch(error => {
       this.messageService.sendMessage({
         type: 'danger',
-        text: `Could not update ${invitations.length} invitations!`
+        text: `
+        Could not update ${invitations.length} ${invitations.length > 1 ? 'invitations' : 'invitation'}!
+        `
       });
       return false;
     }));
