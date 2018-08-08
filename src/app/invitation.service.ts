@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Observable, combineLatest, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, catchError } from 'rxjs/operators';
 
 import { Invitation } from './invitation';
 import { DbInvitation } from './db-invitation';
@@ -27,8 +27,9 @@ export class InvitationService {
   getInvitation(phone: number): Observable<Invitation> {
     this.invitationDoc = this.afs.doc<DbInvitation>(`invitations/${phone}`);
     this.invitation$ = this.invitationDoc.valueChanges().pipe(
+      catchError(error => of(error)),
       switchMap(dbInvitationSnapshot => {
-        if (!dbInvitationSnapshot) {
+        if (!dbInvitationSnapshot || dbInvitationSnapshot instanceof Error) {
           return of(null);
         }
         this.dbInvitation = dbInvitationSnapshot;
