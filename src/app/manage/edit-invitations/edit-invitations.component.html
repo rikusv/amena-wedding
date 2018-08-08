@@ -1,4 +1,8 @@
 <div class="container-fluid">
+  <ngb-alert *ngIf="numberOfResults" [ngPlural]="numberOfResults" type="info" [dismissible]="false">
+    <ng-template ngPluralCase="=1">{{ numberOfResults }} invitation matched</ng-template>
+    <ng-template ngPluralCase="other">{{ numberOfResults }} invitations matched</ng-template>
+  </ngb-alert>
   <form [formGroup]="newInvitationForm" (ngSubmit)="onAdd()">
     <div class="row mt-3">
       <div class="input-group col-md-6 col-12 my-1">

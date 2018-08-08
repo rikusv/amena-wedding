@@ -21,6 +21,7 @@ export class ManageInvitationService {
   private invitations$: BehaviorSubject<DbInvitation[] | null> = new BehaviorSubject(null);
   public searchApi = new SearchApi();
   private ready = false;
+  public numberOfInvitations: number;
 
   constructor(
     private afs: AngularFirestore,
@@ -40,6 +41,7 @@ export class ManageInvitationService {
     this.invitationCollection = this.afs.collection<DbInvitation>('invitations');
     this.invitationCollection.valueChanges().pipe(
       map(invitations => {
+        this.numberOfInvitations = invitations.length;
         if (this.searchApi) {
           this.searchApi.terminate();
         }

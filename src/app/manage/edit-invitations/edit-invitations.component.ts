@@ -23,6 +23,7 @@ export class EditInvitationsComponent implements OnInit {
   events: Event[];
   eventLookup$: Observable<{[id: string]: Event}>;
   searchResult$: Observable<string[]>;
+  numberOfResults: number;
   confirmOverwriteModal: NgbModalRef;
   newInvitationForm = this.fb.group({
     phone: ['', [Validators.required, Validators.pattern]],
@@ -53,10 +54,10 @@ export class EditInvitationsComponent implements OnInit {
         return from(
           this.manageInvitationService.searchApi.search(input)
         ).pipe(
-          map(results => {
-            return Object.keys(results).map(key => {
-              return results[key];
-            });
+          map((results: string[]) => {
+            this.numberOfResults = results.length === this.manageInvitationService.numberOfInvitations ?
+            0 : results.length;
+            return results;
           })
         );
       })
