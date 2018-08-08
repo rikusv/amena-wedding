@@ -94,7 +94,7 @@
   </ngb-panel>
 </ngb-accordion>
 
-<div class="fixed-bottom">
+<div class="fixed-bottom mx-3">
   <ngb-alert *ngFor="let message of (messageService.messages$ | async)" [type]="message.type" [dismissible]="false">
     {{ message.text }}
   </ngb-alert>
