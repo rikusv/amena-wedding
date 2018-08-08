@@ -1,16 +1,21 @@
 export class DbInvitation {
 
-  constructor(dbInvitation: any) {
-    this.name = dbInvitation.name;
-    this.events = dbInvitation.events;
-    this.rsvp = dbInvitation.rsvp;
+  constructor() {
+    this.events = {};
+    this.rsvp = {};
   }
 
+  key?: number;
+  phone: number;
   name: string;
+  group: string;
+  wishlist: boolean;
+  unlikely: boolean;
   events: {
     [id: string]: number
   };
   rsvp: {
     [id: string]: number
   };
+  delete?: boolean;
 }

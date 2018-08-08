@@ -1,12 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { environment } from '../environments/environment';
-
+import { FormsModule } from '@angular/forms';
+import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
 import { InvitationComponent } from './invitation/invitation.component';
 import { LandingComponent } from './landing/landing.component';
@@ -21,10 +19,9 @@ import { InvitationResolverService } from './invitation-resolver.service';
   ],
   imports: [
     BrowserModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule,
     FormsModule,
     NgbModule.forRoot(),
+    SharedModule,
     AppRoutingModule
   ],
   providers: [InvitationResolverService],

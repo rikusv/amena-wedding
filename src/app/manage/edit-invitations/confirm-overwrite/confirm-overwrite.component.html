@@ -1,0 +1,12 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Overwrite invitation?</h4>
+</div>
+<div class="modal-body">
+  <p>
+    It looks like this change may overwrite an existing invitation. Are you sure you want to do that?
+  </p>
+  <div class="row">
+    <button type="button" class="col btn btn-primary float-left mx-3" (click)="noOverwrite()">No</button>
+    <button type="button" class="col btn btn-danger float-right mx-3" (click)="confirmOverwrite()">Yes</button>
+  </div>
+</div>

@@ -1,11 +1,24 @@
 service cloud.firestore {
   match /databases/{database}/documents {
+  	function role(type) {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.roles[type] == true;
+    }
+    function rsvpOnly() {
+     return 'rsvp' in request.writeFields && request.writeFields.size() == 1;
+    }
+    function notWishlist() {
+    	return !resource.data.wishlist;
+    }
     match /invitations/{mobileNumber} {
-      allow get: if true;
-      allow update: if 'rsvp' in request.writeFields && request.writeFields.size() == 1;
+      allow get: if notWishlist();
+      allow list: if role('edit');
+      allow create: if role('edit');
+      allow update: if rsvpOnly() || role('edit');
+      allow delete: if role('edit');
     }
     match /events/{eventKey} {
     	allow get: if true;
+      allow list: if role('edit');
     }
   }
 }

@@ -65,4 +65,5 @@ export class InvitationService {
       console.log(error);
     });
   }
+
 }
