@@ -11,7 +11,7 @@
       <div class="input-group-prepend">
         <span class="input-group-text">+</span>
       </div>
-      <input type="tel" class="form-control" placeholder="Phone" [(ngModel)]="new.phone" (ngModelChange)="onSearch(new.phone)">
+      <input type="tel" class="form-control" placeholder="Phone" [(ngModel)]="new.phone" (ngModelChange)="onSearch(new.phone.toString())">
       <input type="text" class="form-control" placeholder="Name" [(ngModel)]="new.name" (ngModelChange)="onSearch(new.name)">
     </div>
     <div class="input-group col-md-6 col-12 my-1">

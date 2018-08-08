@@ -24,7 +24,7 @@ export class ConfirmOverwriteComponent implements OnInit {
     console.log();
   }
 
-  confirmOverwrite(invitation) {
+  confirmOverwrite() {
     this.manageInvitationService.updateInvitations([this.invitation]);
     this.modalRef.close();
   }
