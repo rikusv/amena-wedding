@@ -3,7 +3,7 @@
 </nav>
 
 <div class="container-fluid">
-  <form [formGroup]="newInvitationForm" (ngSubmit)="onAdd(new)">
+  <form [formGroup]="newInvitationForm" (ngSubmit)="onAdd()">
     <div class="row mt-3">
       <div class="input-group col-md-6 col-12 my-1">
         <div class="input-group-prepend">
@@ -18,7 +18,7 @@
         </div>
         <input type="text" class="form-control" placeholder="Group" formControlName="group">
       </div>
-      <div class="input-group col-md-6 col-12 my-1" *ngFor="let id of objectKeys(newInvitationForm.controls.events?.controls)">
+      <div class="input-group col-md-6 col-12 my-1" *ngFor="let id of objectKeys(newInvitationForm?.controls.events?.controls)">
         <div class="input-group-prepend">
           <span class="input-group-text">{{ (eventLookup$ | async)[id].name }}</span>
           <span class="input-group-text bg-light">Max</span>
