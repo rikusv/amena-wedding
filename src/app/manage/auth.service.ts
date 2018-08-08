@@ -6,6 +6,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { auth, User } from 'firebase/app';
 import 'firebase/auth';
 
+import { MessageService } from '../message.service';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -16,13 +18,15 @@ export class AuthService {
   constructor(
     public afAuth: AngularFireAuth,
     private router: Router,
+    private messageService: MessageService
   ) {
     this.afAuth.user.subscribe(user => {
       this.user$.next(user);
       if (user) {
-        this.router.navigate(['/manage']);
-      } else {
-        this.router.navigate(['manage/login']);
+        this.messageService.sendMessage({
+          type: 'success',
+          text: 'You are logged in'
+        });
       }
     });
   }

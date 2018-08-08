@@ -37,7 +37,6 @@ export class ManageInvitationService {
 
   getInvitations() {
     this.ready = true;
-    // this.manageEventService.getEvents$();
     this.invitationCollection = this.afs.collection<DbInvitation>('invitations');
     this.invitationCollection.valueChanges().pipe(
       map(invitations => {
@@ -117,6 +116,75 @@ export class ManageInvitationService {
       });
       return false;
     }));
+  }
+
+  getInvitationStats(): Observable<any> {
+    if (!this.ready) {
+      this.getInvitations();
+    }
+    const combined$ = combineLatest([
+      this.invitations$,
+      this.manageEventService.getEvents$()
+    ]).pipe(
+      map(arrays => {
+        const invitations = arrays[0] as any[];
+        const events = arrays[1] as any[];
+        const data: any = {};
+        if (!invitations || !events) {
+          return data;
+        }
+        events.forEach(event => data[event.id] = {
+          name: this.manageEventService.eventLookup ?
+          this.manageEventService.eventLookup[event.id].name : event.id,
+          invited: 0,
+          rsvp: 0,
+          pending: 0,
+          group: {},
+          unlikely: {
+            invited: 0,
+            rsvp: 0,
+            pending: 0
+          },
+          wishlist: {
+            invited: 0,
+            rsvp: 0,
+            pending: 0
+          }
+        });
+        invitations.forEach(invitation => {
+          Object.keys(invitation.events).forEach(eventId => {
+            if (invitation.wishlist) {
+              data[eventId].wishlist.invited += invitation.wishlist ? invitation.events[eventId] || 0 : 0;
+              data[eventId].wishlist.rsvp += invitation.wishlist ? invitation.rsvp[eventId] || 0 : 0;
+              data[eventId].wishlist.pending += invitation.wishlist ?
+              (typeof invitation.rsvp[eventId] !== 'number' ? invitation.events[eventId] : 0) : 0;
+            } else {
+              data[eventId].invited += invitation.events[eventId] || 0;
+              data[eventId].rsvp += invitation.rsvp[eventId] || 0;
+              data[eventId].pending += typeof invitation.rsvp[eventId] !== 'number' ? invitation.events[eventId] : 0;
+              data[eventId].unlikely.invited += invitation.unlikely ? invitation.events[eventId] || 0 : 0;
+              data[eventId].unlikely.rsvp += invitation.unlikely ? invitation.rsvp[eventId] || 0 : 0;
+              data[eventId].unlikely.pending += invitation.unlikely ? (typeof invitation.rsvp[eventId] !== 'number' ?
+                invitation.events[eventId] : 0) : 0;
+              if (!data[eventId].group[invitation.group]) {
+                data[eventId].group[invitation.group] = {
+                  invited: 0,
+                  rsvp: 0,
+                  pending: 0
+                };
+              }
+              data[eventId].group[invitation.group].invited += invitation.events[eventId] || 0;
+              data[eventId].group[invitation.group].rsvp += invitation.rsvp[eventId] || 0;
+              data[eventId].group[invitation.group].pending += typeof invitation.rsvp[eventId] !== 'number' ?
+              invitation.events[eventId] : 0;
+            }
+          });
+        });
+        return data;
+      })
+    );
+    combined$.subscribe();
+    return combined$;
   }
 
 }

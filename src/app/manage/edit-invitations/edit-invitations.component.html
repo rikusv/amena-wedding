@@ -1,7 +1,3 @@
-<nav class="navbar navbar-light bg-light">
-  <a class="navbar-brand">Amena and Ferhat's Wedding</a>
-</nav>
-
 <div class="container-fluid">
   <form [formGroup]="newInvitationForm" (ngSubmit)="onAdd()">
     <div class="row mt-3">
@@ -107,16 +103,3 @@
     </ng-template>
   </ngb-panel>
 </ngb-accordion>
-
-<div class="fixed-bottom mx-3">
-  <ngb-alert *ngFor="let message of (messageService.messages$ | async)" [type]="message.type" [dismissible]="false">
-    {{ message.text }}
-  </ngb-alert>
-</div>
-
-<!-- <div ngbDropdown placement="top-left" class="d-inline-block">
-<button class="btn btn-outline-primary" ngbDropdownToggle>RSVP</button>
-<div ngbDropdownMenu>
-<button *ngFor="let i of numbers(event.max)" class="dropdown-item" (click)="rsvp(event, i)">{{ i }}</button>
-</div>
-</div> -->

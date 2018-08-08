@@ -10,6 +10,8 @@ import { LoginComponent } from './login/login.component';
 import { AuthService } from './auth.service';
 import { FilterPipe } from './filter.pipe';
 import { ConfirmOverwriteComponent } from './edit-invitations/confirm-overwrite/confirm-overwrite.component';
+import { ManageBaseComponent } from './manage-base/manage-base.component';
+import { InvitationStatsComponent } from './invitation-stats/invitation-stats.component';
 
 @NgModule({
   imports: [
@@ -25,7 +27,9 @@ import { ConfirmOverwriteComponent } from './edit-invitations/confirm-overwrite/
     EditInvitationsComponent,
     LoginComponent,
     FilterPipe,
-    ConfirmOverwriteComponent
+    ConfirmOverwriteComponent,
+    ManageBaseComponent,
+    InvitationStatsComponent
   ],
   providers: [AuthService],
   entryComponents: [ConfirmOverwriteComponent]

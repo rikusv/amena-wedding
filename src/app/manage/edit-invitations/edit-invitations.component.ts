@@ -8,7 +8,6 @@ import { ConfirmOverwriteComponent } from './confirm-overwrite/confirm-overwrite
 import { AuthService } from '../auth.service';
 import { ManageInvitationService } from '../manage-invitation.service';
 import { ManageEventService } from '../manage-event.service';
-import { MessageService } from '../../message.service';
 import { DbInvitation } from '../../db-invitation';
 import { Event } from '../../event';
 
@@ -39,7 +38,6 @@ export class EditInvitationsComponent implements OnInit {
     public authService: AuthService,
     private manageInvitationService: ManageInvitationService,
     private manageEventService: ManageEventService,
-    public messageService: MessageService,
     private modalService: NgbModal
   ) {
     this.searchResult$ = this.newInvitationForm.valueChanges.pipe(
