@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { Observable, combineLatest, of, from } from 'rxjs';
+import { Observable, combineLatest, of, from, BehaviorSubject } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import SearchApi from 'js-worker-search';
 
@@ -17,8 +17,10 @@ import { Event } from '../event';
 export class ManageInvitationService {
 
   private invitationCollection: AngularFirestoreCollection<DbInvitation>;
-  private invitations$: Observable<DbInvitation[]>;
+  // private invitations$: Observable<DbInvitation[]>;
+  private invitations$: BehaviorSubject<DbInvitation[] | null> = new BehaviorSubject(null);
   public searchApi = new SearchApi();
+  private ready = false;
 
   constructor(
     private afs: AngularFirestore,
@@ -27,13 +29,17 @@ export class ManageInvitationService {
   ) { }
 
   getInvitations$(): Observable<DbInvitation[]> {
+    if (!this.ready) {
+      this.getInvitations();
+    }
     return this.invitations$;
   }
 
   getInvitations() {
-    this.manageEventService.getEvents();
+    this.ready = true;
+    // this.manageEventService.getEvents$();
     this.invitationCollection = this.afs.collection<DbInvitation>('invitations');
-    this.invitations$ = this.invitationCollection.valueChanges().pipe(
+    this.invitationCollection.valueChanges().pipe(
       map(invitations => {
         if (this.searchApi) {
           this.searchApi.terminate();
@@ -56,9 +62,8 @@ export class ManageInvitationService {
           };
         });
       })
-    );
-    this.invitations$.subscribe(invitations => {
-     console.log();
+    ).subscribe(invitations => {
+     this.invitations$.next(invitations);
     });
   }
 

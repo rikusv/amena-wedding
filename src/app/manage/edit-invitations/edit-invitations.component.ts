@@ -68,13 +68,13 @@ export class EditInvitationsComponent implements OnInit {
   ngOnInit() {
     this.authService.user$.subscribe(user => {
       if (user) {
-        this.manageInvitationService.getInvitations();
         this.invitations$ = this.manageInvitationService.getInvitations$();
         this.events$ = this.manageEventService.getEvents$();
         this.events$.subscribe(events => {
-          this.events = events;
-          this.updateNewInvitationForm(events);
-
+          if (events) {
+            this.events = events;
+            this.updateNewInvitationForm(events);
+          }
         });
         this.eventLookup$ = this.manageEventService.getEventLookup$();
       }

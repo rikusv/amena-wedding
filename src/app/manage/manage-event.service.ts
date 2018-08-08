@@ -12,16 +12,20 @@ import { Event } from '../event';
 export class ManageEventService {
 
   private eventCollection: AngularFirestoreCollection<Event>;
-  private events$: Observable<Event[]>;
+  private events$: BehaviorSubject<Event[] | null> = new BehaviorSubject(null);
   public eventLookup$: BehaviorSubject<{[id: string]: Event}> = new BehaviorSubject({});
   public eventLookup: {[id: string]: Event};
   public events: Event[];
+  private ready = false;
 
   constructor(
     private afs: AngularFirestore
   ) { }
 
   getEvents$(): Observable<Event[]> {
+    if (!this.ready) {
+      this.getEvents();
+    }
     return this.events$;
   }
 
@@ -31,13 +35,13 @@ export class ManageEventService {
 
   getEvents() {
     this.eventCollection = this.afs.collection<Event>('events');
-    this.events$ = this.eventCollection.snapshotChanges().pipe(
+    this.eventCollection.snapshotChanges().pipe(
       map(actions => actions.map(action => ({
         id: action.payload.doc.id,
         ...action.payload.doc.data()
       })))
-    );
-    this.events$.subscribe(events => {
+    ).subscribe(events => {
+      this.events$.next(events);
       this.events = events;
       const eventLookup = {};
       events.forEach(event => {
