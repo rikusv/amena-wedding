@@ -40,7 +40,9 @@ export class LandingComponent implements OnInit {
   }
 
   fetchInvitation(input: NgModel) {
-    if (input.invalid) {
+    if (Number(this.phone) === this.notFoundPhone) {
+      this.state = 'notFound';
+    } else if (input.invalid) {
       this.state = 'inputErrors';
     } else {
       const path = `/invitation/${this.phone}`;

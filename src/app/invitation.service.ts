@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable, combineLatest, of } from 'rxjs';
-import { switchMap, withLatestFrom, catchError } from 'rxjs/operators';
+import { switchMap, catchError } from 'rxjs/operators';
 
 import { Invitation } from './invitation';
 import { DbInvitation } from './db-invitation';
@@ -23,6 +23,7 @@ export class InvitationService {
   ) {
     this.publicEventsCollection = this.afs.collection('events', ref => ref.where('public', '==', true));
     this.publicEvents$ = this.publicEventsCollection.valueChanges();
+    this.publicEvents$.subscribe();
   }
 
   getInvitation$(): Observable<Invitation> {
@@ -31,9 +32,8 @@ export class InvitationService {
 
   getInvitation(phone: number): Observable<Invitation> {
     this.invitationDoc = this.afs.doc<DbInvitation>(`invitations/${phone}`);
-    this.invitation$ = this.invitationDoc.valueChanges().pipe(
+    this.invitation$ = combineLatest(this.invitationDoc.valueChanges(), this.publicEventsCollection.valueChanges()).pipe(
       catchError(error => of(error)),
-      withLatestFrom(this.publicEvents$),
       switchMap(([dbInvitation, publicEvents]) => {
         if (!dbInvitation || dbInvitation instanceof Error) {
           return of(null);
@@ -63,6 +63,9 @@ export class InvitationService {
         );
       })
     );
+    // this.invitation$.subscribe(i => {
+    //   console.log(i);
+    // });
     return this.invitation$;
   }
 
