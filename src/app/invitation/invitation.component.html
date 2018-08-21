@@ -1,71 +1,86 @@
-<!-- <div *ngIf="!(invitation$ | async)" class="container" style="height: 100vh;">
-  <div class="progress my-3">
-    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+<div class="container invitation">
+
+  <div class="row no-gutters">
+    <div class="col-3 mt-3">
+      <img src="../../assets/leaf1.svg" />
+    </div>
+    <div class="col mt-5">
+      <img src="../../assets/top-graphic.svg" />
+      <h3 *ngIf="invitation" class="fancy-text maroon-text my-4">
+        {{ invitation ? 'Dear ' + invitation.name : 'You\'re invited' }}
+      </h3>
+      <p class="mt-4 green-text">
+        <strong>THE HAYAT & JEENA FAMILIES</strong>
+      </p>
+    </div>
+    <div class="col-3 mt-3">
+      <img src="../../assets/leaf1.svg" style="transform: scaleX(-1);"/>
+    </div>
   </div>
-</div> -->
 
-<div class="container">
-  <div class="jumbotron">
-    <h1 class="display-4">
-      {{ invitation ? 'Welcome ' + invitation.name : 'You\'re invited' }}
-    </h1>
-    <p class="lead">
-      We would love it if you could join us in celebrating our wedding.
-    </p>
-    <footer class="blockquote-footer">Amena and Ferhat</footer>
-    <hr class="my-4">
-    <form class="needs-validation" novalidate>
+  <p class="maroon-text px-5">
+    <strong>REQUEST THE PLEASURE OF YOUR COMPANY TO CELEBRATE THE MARRIAGE OF</strong>
+  </p>
+  <h1 class="display-1 fancy-text green-text text-center">Amena</h1>
+  <p class="maroon-text px-5">
+    <strong>DAUGHTER OF ZULAIKHA & SHABIER HAYAT</strong>
+  </p>
+  <h1 class="display-4 fancy-text green-text text-center">&</h1>
+  <h1 class="display-1 fancy-text green-text text-center">Ferhat</h1>
+  <p class="maroon-text px-5">
+    <strong>SON OF PARVEEN & MARHOOM GOOLAM MOHAMED JEENA</strong>
+  </p>
 
-      <div class="row">
-        <div *ngFor="let event of (invitation$ | async)?.events" class="col-sm-6">
-          <div class="card my-3">
-            <div class="card-body">
-              <h5 class="card-title">{{ event.name }}</h5>
-              <p class="card-text">{{ event.venue }}</p>
-              <p class="card-text">{{ event.time }}</p>
-              <p *ngIf="event.rsvp" class="card-text">
-                <small class="text-muted">
-                  You've RSVP'd for {{ event.rsvp }}.
-                </small>
-              </p>
-              <div ngbDropdown placement="top-left" class="d-inline-block">
-                <button class="btn btn-outline-primary" ngbDropdownToggle>RSVP</button>
-                <div ngbDropdownMenu>
-                  <button *ngFor="let i of numbers(event.max)" class="dropdown-item" (click)="rsvp(event, i)">{{ i }}</button>
-                </div>
-              </div>
+  <form class="needs-validation" novalidate>
+
+    <div class="list-group list-group-flush maroon-text">
+
+      <div *ngFor="let event of (invitation$ | async)?.events" class="list-group-item flex-column align-items-start">
+        <h3 class="mb-1">{{ event.name }}</h3>
+        <p class="mb-1">
+          <small class="green-text">Date </small>
+          {{ event.date}} | {{ event.dateAlt }}
+        </p>
+        <p class="mb-1">
+          <small class="green-text">Time </small>
+          {{ event.time}}
+        </p>
+        <p class="mb-1">
+          <small class="green-text">Venue </small>
+          {{ event.venue}}
+        </p>
+        <div class="d-flex w-100 justify-content-between">
+          <small class="text-muted align-self-end">
+            <ng-container *ngIf="event.rsvp">
+              You've RSVP'd for {{ event.rsvp }}.
+            </ng-container>
+          </small>
+          <div *ngIf="!event.public" ngbDropdown placement="top-left" class="d-inline-block">
+            <button class="btn btn-outline-primary" ngbDropdownToggle>RSVP</button>
+            <div ngbDropdownMenu>
+              <button *ngFor="let i of numbers(event.max)" class="dropdown-item" (click)="rsvp(event, i)">{{ i }}</button>
             </div>
           </div>
         </div>
       </div>
 
-    </form>
-  </div>
-</div>
-
-
-<ng-container>
-  <!-- <form class="needs-validation" novalidate>
-
-    <div class="row">
-      <div *ngFor="let event of (invitation$ | async)?.events" class="col-sm-6">
-        <div class="card my-3">
-          <div class="card-body">
-            <h5 class="card-title">{{ event.name }}</h5>
-            <p class="card-text">{{ event.venue }}</p>
-            <p class="card-text">{{ event.time }}</p>
-            <p class="card-text">{{ event.rsvp }}</p>
-            <div ngbDropdown placement="top-left" class="d-inline-block">
-              <button class="btn btn-outline-primary" ngbDropdownToggle>RSVP</button>
-              <div ngbDropdownMenu>
-                <button *ngFor="let i of numbers(event.max)" class="dropdown-item" (click)="rsvp(event, i)">{{ i }}</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
-  </form> -->
+  </form>
 
-</ng-container>
+
+  <div class="row no-gutters mt-3">
+    <div class="col-3 mt-3">
+      <img src="../../assets/leaf2.svg" />
+    </div>
+    <div class="col">
+      <p class="mx-1">
+        <strong>THE HAYAT & JEENA FAMILIES</strong>
+      </p>
+    </div>
+    <div class="col-3 mt-3">
+      <img src="../../assets/leaf2.svg" style="transform: scaleX(-1);"/>
+    </div>
+  </div>
+
+</div>

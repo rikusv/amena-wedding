@@ -18,7 +18,7 @@ service cloud.firestore {
     }
     match /events/{eventKey} {
     	allow get: if true;
-      allow list: if role('edit');
+      allow list: if role('edit') || resource.data.public == true;
     }
   }
 }

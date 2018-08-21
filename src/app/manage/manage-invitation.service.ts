@@ -135,22 +135,26 @@ export class ManageInvitationService {
         if (!invitations || !events) {
           return data;
         }
-        events.forEach(event => data[event.id] = {
-          name: this.manageEventService.eventLookup ?
-          this.manageEventService.eventLookup[event.id].name : event.id,
-          invited: 0,
-          rsvp: 0,
-          pending: 0,
-          group: {},
-          unlikely: {
-            invited: 0,
-            rsvp: 0,
-            pending: 0
-          },
-          wishlist: {
-            invited: 0,
-            rsvp: 0,
-            pending: 0
+        events.forEach(event => {
+          if (!event.public) {
+            data[event.id] = {
+              name: this.manageEventService.eventLookup ?
+              this.manageEventService.eventLookup[event.id].name : event.id,
+              invited: 0,
+              rsvp: 0,
+              pending: 0,
+              group: {},
+              unlikely: {
+                invited: 0,
+                rsvp: 0,
+                pending: 0
+              },
+              wishlist: {
+                invited: 0,
+                rsvp: 0,
+                pending: 0
+              }
+            };
           }
         });
         invitations.forEach(invitation => {

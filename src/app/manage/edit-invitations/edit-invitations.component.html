@@ -19,18 +19,20 @@
         <input type="text" class="form-control" placeholder="Group" formControlName="group">
       </div>
       <div class="input-group col-md-6 col-12 my-1" *ngFor="let event of eventsOnceFormReady()">
-        <div class="input-group-prepend">
-          <span class="input-group-text">{{ event.name }}</span>
-          <span class="input-group-text bg-light">Max</span>
-        </div>
-        <ng-container formGroupName="events">
-          <input type="number" class="form-control" [formControlName]="event.id">
-        </ng-container>
-        <div class="input-group-prepend">
-          <span class="input-group-text bg-light">RSVP</span>
-        </div>
-        <ng-container formGroupName="rsvp">
-          <input type="number" class="form-control" [formControlName]="event.id">
+        <ng-container *ngIf="!event.public">
+          <div class="input-group-prepend">
+            <span class="input-group-text">{{ event.name }}</span>
+            <span class="input-group-text bg-light">Max</span>
+          </div>
+          <ng-container formGroupName="events">
+            <input type="number" class="form-control" [formControlName]="event.id">
+          </ng-container>
+          <div class="input-group-prepend">
+            <span class="input-group-text bg-light">RSVP</span>
+          </div>
+          <ng-container formGroupName="rsvp">
+            <input type="number" class="form-control" [formControlName]="event.id">
+          </ng-container>
         </ng-container>
       </div>
       <div class="col-md-6 col-12 my-1">
@@ -79,15 +81,17 @@
           <input type="text" class="form-control" placeholder="Group" [(ngModel)]="invitation.group">
         </div>
         <div class="input-group col-md-6 col-12 my-1" *ngFor="let event of events">
-          <div class="input-group-prepend">
-            <span class="input-group-text">{{ event.name }}</span>
-            <span class="input-group-text bg-light">Max</span>
-          </div>
-          <input type="number" class="form-control" [(ngModel)]="invitation.events[event.id]">
-          <div class="input-group-prepend">
-            <span class="input-group-text bg-light">RSVP</span>
-          </div>
-          <input type="number" class="form-control" [(ngModel)]="invitation.rsvp[event.id]">
+          <ng-container *ngIf="!event.public">
+            <div class="input-group-prepend">
+              <span class="input-group-text">{{ event.name }}</span>
+              <span class="input-group-text bg-light">Max</span>
+            </div>
+            <input type="number" class="form-control" [(ngModel)]="invitation.events[event.id]">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-light">RSVP</span>
+            </div>
+            <input type="number" class="form-control" [(ngModel)]="invitation.rsvp[event.id]">
+          </ng-container>
         </div>
         <div class="col-md-6 col-12 my-1">
           <div class="form-group form-check form-check-inline">

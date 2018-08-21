@@ -1,39 +1,11 @@
-<div class="container">
-
-  <div class="jumbotron">
-    <h1 class="display-4">Invitation</h1>
-    <p class="lead">
-      We would love it if you could join us in celebrating our wedding.
-    </p>
-    <footer class="blockquote-footer">Amena and Ferhat</footer>
-    <hr class="my-4">
-
-    <ng-container>
-      <p>
-        Please enter your mobile number (including country code) below to view further details.
-      </p>
-      <form class="needs-validation" novalidate>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">+</span>
-          </div>
-          <input type="tel" pattern="[0-9]*" required class="form-control" placeholder="e.g. 27823456789" name="phone" [(ngModel)]="phone" #phoneInput="ngModel">
-          <div class="input-group-append">
-            <button class="btn btn-outline-primary" type="submit" (click)="fetchInvitation(phoneInput)">
-              Submit
-            </button>
-          </div>
-        </div>
-      </form>
-    </ng-container>
-
-  </div>
+<div class="container my-3">
 
   <div *ngIf="state == 'loading'" class="progress">
     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
   </div>
 
   <div *ngIf="phoneInput.invalid && (phoneInput.dirty || phoneInput.touched || state == 'inputErrors')">
+
     <ngb-alert *ngIf="phoneInput.errors.required" type="warning" [dismissible]="false">
       Please enter your mobile number.
     </ngb-alert>
@@ -45,5 +17,64 @@
   <ngb-alert *ngIf="state == 'notFound'" type="warning" [dismissible]="false">
     No invitation found for mobile number <strong>+{{ notFoundPhone }}</strong>.
   </ngb-alert>
+
+</div>
+
+<div class="container invitation">
+
+  <div class="row no-gutters">
+    <div class="col-3 mt-3">
+      <img src="../../assets/leaf1.svg" />
+    </div>
+    <div class="col mt-5">
+      <img src="../../assets/top-graphic.svg" />
+      <p class="mt-4 maroon-text">
+        <strong>THE WEDDING OF</strong>
+      </p>
+    </div>
+    <div class="col-3 mt-3">
+      <img src="../../assets/leaf1.svg" style="transform: scaleX(-1);"/>
+    </div>
+  </div>
+
+  <div>
+    <h1 class="display-1 fancy-text green-text text-center mb-5">
+      Amena & Ferhat
+    </h1>
+
+    <ng-container>
+      <p class="maroon-text">
+        Please enter your mobile number including country code to fetch your invitation.
+      </p>
+      <form class="needs-validation" novalidate>
+        <div class="input-group pb-5 mx-auto" style="max-width: 300px;">
+          <div class="input-group-prepend">
+            <span class="input-group-text">+</span>
+          </div>
+          <input type="tel" pattern="[0-9]*" required class="form-control" placeholder="e.g. 27823456789" name="phone" [(ngModel)]="phone" #phoneInput="ngModel">
+          <div class="input-group-append">
+            <button class="btn btn-outline-primary" type="submit" (click)="fetchInvitation(phoneInput)">
+              Fetch
+            </button>
+          </div>
+        </div>
+      </form>
+    </ng-container>
+
+  </div>
+
+  <div class="row no-gutters">
+    <div class="col-3 mt-3">
+      <img src="../../assets/leaf2.svg" />
+    </div>
+    <div class="col">
+      <p class="mx-1 maroon-text">
+        <strong>THE HAYAT & JEENA FAMILIES</strong>
+      </p>
+    </div>
+    <div class="col-3 mt-3">
+      <img src="../../assets/leaf2.svg" style="transform: scaleX(-1);"/>
+    </div>
+  </div>
 
 </div>

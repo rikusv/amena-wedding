@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable, combineLatest, of } from 'rxjs';
-import { switchMap, catchError } from 'rxjs/operators';
+import { switchMap, withLatestFrom, catchError } from 'rxjs/operators';
 
 import { Invitation } from './invitation';
 import { DbInvitation } from './db-invitation';
@@ -12,15 +12,20 @@ import { Event } from './event';
 })
 export class InvitationService {
 
+  private publicEventsCollection: AngularFirestoreCollection<Event>;
+  private publicEvents$: Observable<Event[]>;
   private invitationDoc: AngularFirestoreDocument<DbInvitation>;
   private invitation$: Observable<Invitation>;
   private dbInvitation: DbInvitation;
 
   constructor(
     private afs: AngularFirestore
-  ) { }
+  ) {
+    this.publicEventsCollection = this.afs.collection('events', ref => ref.where('public', '==', true));
+    this.publicEvents$ = this.publicEventsCollection.valueChanges();
+  }
 
-  getInvitation$() {
+  getInvitation$(): Observable<Invitation> {
     return this.invitation$;
   }
 
@@ -28,29 +33,32 @@ export class InvitationService {
     this.invitationDoc = this.afs.doc<DbInvitation>(`invitations/${phone}`);
     this.invitation$ = this.invitationDoc.valueChanges().pipe(
       catchError(error => of(error)),
-      switchMap(dbInvitationSnapshot => {
-        if (!dbInvitationSnapshot || dbInvitationSnapshot instanceof Error) {
+      withLatestFrom(this.publicEvents$),
+      switchMap(([dbInvitation, publicEvents]) => {
+        if (!dbInvitation || dbInvitation instanceof Error) {
           return of(null);
         }
-        this.dbInvitation = dbInvitationSnapshot;
+        this.dbInvitation = dbInvitation;
         const eventObservables = Object.keys(this.dbInvitation.events).map(key => {
           return this.afs.doc<Event>(`events/${key}`).snapshotChanges();
         });
         return combineLatest(eventObservables).pipe(
           switchMap(eventSnapshots => {
-            return of({
-                name: this.dbInvitation.name,
-                phone: phone,
-                events: eventSnapshots.map(eventSnapshot => {
-                  const event = {
-                    id: eventSnapshot.payload.id,
-                    max: this.dbInvitation.events[eventSnapshot.payload.id],
-                    rsvp: this.dbInvitation.rsvp ? this.dbInvitation.rsvp[eventSnapshot.payload.id] : null,
-                    ...eventSnapshot.payload.data()
-                  };
-                  return event;
-                })
+            const invitationEvents = publicEvents.map(event => event);
+            eventSnapshots.forEach(eventSnapshot => {
+              invitationEvents.push({
+                id: eventSnapshot.payload.id,
+                max: this.dbInvitation.events[eventSnapshot.payload.id],
+                rsvp: this.dbInvitation.rsvp ? this.dbInvitation.rsvp[eventSnapshot.payload.id] : null,
+                ...eventSnapshot.payload.data()
               });
+            });
+            const invitation = {
+              name: this.dbInvitation.name,
+              phone: phone,
+              events: invitationEvents
+            };
+            return of(invitation);
           })
         );
       })
