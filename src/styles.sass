@@ -1,0 +1,48 @@
+/* You can add global styles to this file, and also import other style files */
+
+$maroon: #4B170C
+$brown: #D3B096
+$green: #28351D
+$green-background: hsl(93, 5%, 65%)
+$green-border: hsl(93, 10%, 50%)
+
+$theme-colors: ("primary": $maroon)
+
+@import "node_modules/bootstrap/scss/bootstrap"
+
+@font-face { font-family: "ChaseCallasSH"; src: url("./assets/fonts/chasecallassh.ttf"); }
+
+*
+  font-family: "Times New Roman", Times, serif
+
+.fancy-text
+  font-family: ChaseCallasSH
+
+p, h1, h2, h3, h4, h5, h6
+  text-align: center
+
+.invitation
+  background-color: $brown
+  color: $maroon
+
+// .invitation input
+//   background-color: $green-background
+//   border-color: $green-border
+//
+// .invitation .input-group-text
+//   background-color: $green-background
+//   border-color: $green-border
+
+.invitation .list-group-item
+  background-color: $brown
+
+.green-text
+  color: $green
+
+.no-gutters
+  margin-right: 0
+  margin-left: 0
+
+  .col, [class*="col-"]
+    padding-right: 0
+    padding-left: 0

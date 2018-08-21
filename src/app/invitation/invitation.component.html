@@ -6,7 +6,7 @@
     </div>
     <div class="col mt-5">
       <img src="../../assets/top-graphic.svg" />
-      <h3 *ngIf="invitation" class="fancy-text maroon-text my-4">
+      <h3 *ngIf="invitation" class="fancy-text my-4">
         {{ invitation ? 'Dear ' + invitation.name : 'You\'re invited' }}
       </h3>
       <p class="mt-4 green-text">
@@ -18,41 +18,45 @@
     </div>
   </div>
 
-  <p class="maroon-text px-5">
+  <p class="px-5">
     <strong>REQUEST THE PLEASURE OF YOUR COMPANY TO CELEBRATE THE MARRIAGE OF</strong>
   </p>
   <h1 class="display-1 fancy-text green-text text-center">Amena</h1>
-  <p class="maroon-text px-5">
+  <p class="px-5">
     <strong>DAUGHTER OF ZULAIKHA & SHABIER HAYAT</strong>
   </p>
   <h1 class="display-4 fancy-text green-text text-center">&</h1>
   <h1 class="display-1 fancy-text green-text text-center">Ferhat</h1>
-  <p class="maroon-text px-5">
+  <p class="px-5">
     <strong>SON OF PARVEEN & MARHOOM GOOLAM MOHAMED JEENA</strong>
   </p>
 
   <form class="needs-validation" novalidate>
 
-    <div class="list-group list-group-flush maroon-text">
+    <div class="list-group list-group-flush my-5">
 
       <div *ngFor="let event of (invitation$ | async)?.events" class="list-group-item flex-column align-items-start">
         <h3 class="mb-1">{{ event.name }}</h3>
         <p class="mb-1">
           <small class="green-text">Date </small>
-          {{ event.date}} | {{ event.dateAlt }}
+          <span class="mx-2">{{ event.date }}</span>
+          <span class="mx-2">{{ event.dateAlt }}</span>
         </p>
         <p class="mb-1">
           <small class="green-text">Time </small>
-          {{ event.time}}
+          <span class="mx-2">{{ event.time}}</span>
         </p>
         <p class="mb-1">
           <small class="green-text">Venue </small>
-          {{ event.venue}}
+          <span class="mx-2">{{ event.venue}}</span>
         </p>
-        <div class="d-flex w-100 justify-content-between">
-          <small class="text-muted align-self-end">
+        <div class="d-flex w-100 justify-content-end">
+          <small class="text-muted align-self-center pr-3">
             <ng-container *ngIf="event.rsvp">
-              You've RSVP'd for {{ event.rsvp }}.
+              You've RSVP'd for {{ event.rsvp }}
+            </ng-container>
+            <ng-container *ngIf="event.public">
+              No RSVP needed
             </ng-container>
           </small>
           <div *ngIf="!event.public" ngbDropdown placement="top-left" class="d-inline-block">
@@ -68,13 +72,24 @@
 
   </form>
 
+  <p class="px-5">
+    <em>
+        Your presence and prayers are most valued to us at the celebration of Amena and Ferhat's wedding.
+    </em>
+  </p>
+  <p class="px-5">
+    <em>
+        For those who would like to gift them on this happy occasion, please take into consideration that they will be relocating to the UK.
+    </em>
+  </p>
+
 
   <div class="row no-gutters mt-3">
     <div class="col-3 mt-3">
       <img src="../../assets/leaf2.svg" />
     </div>
     <div class="col">
-      <p class="mx-1">
+      <p class="mx-1 green-text">
         <strong>THE HAYAT & JEENA FAMILIES</strong>
       </p>
     </div>
