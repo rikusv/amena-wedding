@@ -72,10 +72,23 @@ export class ManageInvitationService {
     const batch = this.afs.firestore.batch();
     let updated = 0, deleted = 0;
     invitations.forEach(invitation => {
+      const payload = {rsvp: {}, events: {}};
+      Object.keys(invitation).forEach(property => {
+        if (property !== 'key' && property !== 'events' && property !== 'rsvp') {
+          payload[property] = invitation[property];
+        }
+      });
+      Object.keys(invitation.events).forEach(event => {
+        if (invitation.events[event] > 0) {
+          payload.events[event] = invitation.events[event];
+        }
+      });
+      Object.keys(invitation.rsvp).forEach(rsvp => {
+        payload.rsvp[rsvp] = invitation.rsvp[rsvp];
+      });
       updated += !invitation.delete ? 1 : 0;
       deleted += invitation.delete ? 1 : 0;
       const key = invitation.key;
-      delete invitation.key;
       if ((key && key !== invitation.phone) || invitation.delete) {
         batch.delete(
           this.afs.firestore.collection('invitations').doc(key.toString())
@@ -84,12 +97,12 @@ export class ManageInvitationService {
       if (!key || key !== invitation.phone) {
         batch.set(
           this.afs.firestore.collection('invitations').doc(invitation.phone.toString()),
-          invitation
+          payload
         );
       } else if (!invitation.delete) {
         batch.update(
           this.afs.firestore.collection('invitations').doc(invitation.phone.toString()),
-          invitation
+          payload
         );
       }
     });

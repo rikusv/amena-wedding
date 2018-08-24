@@ -91,7 +91,7 @@ export class EditInvitationsComponent implements OnInit {
 
   eventsOnceFormReady() {
     if (this.newInvitationForm.get('events') &&
-    Object.keys(this.newInvitationForm.get('events').value).length === this.events.length) {
+    Object.keys(this.newInvitationForm.get('events').value).length) {
       return this.events;
     }
   }
@@ -102,7 +102,9 @@ export class EditInvitationsComponent implements OnInit {
   updateNewInvitationForm(events: Event[]) {
     const eventMap = {};
     events.forEach(event => {
-      eventMap[event.id] = '';
+      if (!event.public) {
+        eventMap[event.id] = 0;
+      }
     });
     this.newInvitationForm.controls.events = this.fb.group(eventMap);
     this.newInvitationForm.controls.rsvp = this.fb.group(eventMap);
@@ -138,7 +140,7 @@ export class EditInvitationsComponent implements OnInit {
   }
 
   onAdd() {
-    const invitation = this.newInvitationForm.value;
+    const invitation = this.newInvitationForm.getRawValue();
     this.manageInvitationService.updateInvitations([invitation])
     .subscribe(success => {
       if (success) {
