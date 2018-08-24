@@ -28,6 +28,7 @@ export class EditInvitationsComponent implements OnInit {
   newInvitationForm = this.fb.group({
     phone: ['', [Validators.required, Validators.pattern]],
     name: ['', Validators.required],
+    surname: [''],
     group: [''],
     wishlist: [false],
     unlikely: [false]

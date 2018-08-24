@@ -8,6 +8,7 @@ export class DbInvitation {
   key?: number;
   phone: number;
   name: string;
+  surname?: string;
   group: string;
   wishlist: boolean;
   unlikely: boolean;

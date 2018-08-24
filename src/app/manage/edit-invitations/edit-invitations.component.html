@@ -14,6 +14,12 @@
       </div>
       <div class="input-group col-md-6 col-12 my-1">
         <div class="input-group-prepend">
+          <span class="input-group-text">Surname</span>
+        </div>
+        <input type="text" class="form-control" placeholder="Surname" formControlName="surname">
+      </div>
+      <div class="input-group col-md-6 col-12 my-1">
+        <div class="input-group-prepend">
           <span class="input-group-text">Group</span>
         </div>
         <input type="text" class="form-control" placeholder="Group" formControlName="group">
@@ -73,6 +79,12 @@
           </div>
           <input type="tel" class="form-control" placeholder="Phone" [(ngModel)]="invitation.phone">
           <input type="text" class="form-control" placeholder="Name" [(ngModel)]="invitation.name">
+        </div>
+        <div class="input-group col-md-6 col-12 my-1">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Surname</span>
+          </div>
+          <input type="text" class="form-control" placeholder="Surname" [(ngModel)]="invitation.surname">
         </div>
         <div class="input-group col-md-6 col-12 my-1">
           <div class="input-group-prepend">
