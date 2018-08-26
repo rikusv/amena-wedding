@@ -103,7 +103,7 @@ export class EditInvitationsComponent implements OnInit {
     const eventMap = {};
     events.forEach(event => {
       if (!event.public) {
-        eventMap[event.id] = 0;
+        eventMap[event.id] = '';
       }
     });
     this.newInvitationForm.controls.events = this.fb.group(eventMap);
