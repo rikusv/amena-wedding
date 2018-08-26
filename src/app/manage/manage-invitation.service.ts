@@ -84,7 +84,9 @@ export class ManageInvitationService {
         }
       });
       Object.keys(invitation.rsvp).forEach(rsvp => {
-        payload.rsvp[rsvp] = invitation.rsvp[rsvp];
+        if (invitation.rsvp[rsvp] > 0) {
+          payload.rsvp[rsvp] = invitation.rsvp[rsvp];
+        }
       });
       updated += !invitation.delete ? 1 : 0;
       deleted += invitation.delete ? 1 : 0;
