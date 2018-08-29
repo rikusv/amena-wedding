@@ -21,7 +21,6 @@ export class ConfirmOverwriteComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log();
   }
 
   confirmOverwrite() {
