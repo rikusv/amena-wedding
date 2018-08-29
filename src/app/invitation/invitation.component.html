@@ -60,7 +60,7 @@
             </ng-container>
           </small>
           <div *ngIf="!event.public" ngbDropdown placement="top-left" class="d-inline-block">
-            <button class="btn btn-outline-primary" ngbDropdownToggle>RSVP</button>
+            <button class="btn btn-secondary" ngbDropdownToggle>RSVP</button>
             <div ngbDropdownMenu>
               <button *ngFor="let i of numbers(event.max)" class="dropdown-item" (click)="rsvp(event, i)">{{ i }}</button>
             </div>
