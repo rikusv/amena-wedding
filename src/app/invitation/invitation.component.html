@@ -38,36 +38,35 @@
       <div *ngFor="let event of (invitation$ | async)?.events" class="list-group-item flex-column align-items-start">
         <h3 class="mb-1">{{ event.name }}</h3>
         <p class="mb-1">
-          <small class="green-text">Date </small>
+          <i class="material-icons align-middle text-secondary">event</i>
           <span class="mx-2 no-break">{{ event.date }}</span>
           <span class="mx-2 no-break">{{ event.dateAlt }}</span>
         </p>
         <p class="mb-1">
-          <small class="green-text">Time </small>
+          <i class="material-icons align-middle text-secondary">access_time</i>
           <span class="mx-2">{{ event.time}}</span>
         </p>
         <p class="mb-1">
-          <small class="green-text">Venue </small>
-          <span class="mx-2">{{ event.venue}}</span>
-        </p>
-        <div class="row justify-content-between">
-          <a class="btn btn-outline-secondary" [href]="event.venueMapUrl" target="_blank" role="button">
-            Map
+          <a class="mx-2" [href]="event.venueMapUrl" target="_blank">
+            <i class="material-icons align-middle text-secondary">place</i>
+            {{ event.venue}}
           </a>
-          <div *ngIf="!event.public" ngbDropdown placement="top-left">
+        </p>
+        <div class="d-flex w-100 justify-content-end">
+          <small class="text-muted align-self-center pr-3">
+            <ng-container *ngIf="event.rsvp">
+              You've RSVP'd for {{ event.rsvp }}
+            </ng-container>
+            <ng-container *ngIf="event.public">
+              No RSVP needed
+            </ng-container>
+          </small>
+          <div *ngIf="!event.public" ngbDropdown placement="top-left" class="d-inline-block">
             <button class="btn btn-secondary" ngbDropdownToggle>RSVP</button>
             <div ngbDropdownMenu>
               <button *ngFor="let i of numbers(event.max)" class="dropdown-item" (click)="rsvp(event, i)">{{ i }}</button>
             </div>
           </div>
-        </div>
-        <div class="row text-muted justify-content-end">
-          <small *ngIf="event.rsvp">
-            You've RSVP'd for {{ event.rsvp }}
-          </small>
-          <small *ngIf="event.public">
-            No RSVP needed
-          </small>
         </div>
       </div>
 
