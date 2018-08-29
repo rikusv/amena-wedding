@@ -13,7 +13,6 @@ import { ConfirmOverwriteComponent } from './edit-invitations/confirm-overwrite/
 import { ManageBaseComponent } from './manage-base/manage-base.component';
 import { InvitationStatsComponent } from './invitation-stats/invitation-stats.component';
 import { EditInvitationComponent } from './edit-invitations/edit-invitation/edit-invitation.component';
-import { EditInvitationComponent } from './edit-invitations/edit-invitation/edit-invitation.component';
 
 @NgModule({
   imports: [
@@ -32,7 +31,6 @@ import { EditInvitationComponent } from './edit-invitations/edit-invitation/edit
     ConfirmOverwriteComponent,
     ManageBaseComponent,
     InvitationStatsComponent,
-    EditInvitationComponent,
     EditInvitationComponent
   ],
   providers: [AuthService],
