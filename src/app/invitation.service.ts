@@ -31,6 +31,12 @@ export class InvitationService {
   }
 
   getInvitation(phone: number): Observable<Invitation> {
+    function sortEvents(invitation) {
+      invitation.events.sort((a, b) => {
+        return a.datetime.seconds - b.datetime.seconds;
+      });
+      return invitation;
+    }
     this.invitationDoc = this.afs.doc<DbInvitation>(`invitations/${phone}`);
     this.invitation$ = combineLatest(this.invitationDoc.valueChanges(), this.publicEventsCollection.valueChanges()).pipe(
       catchError(error => of(error)),
@@ -38,38 +44,36 @@ export class InvitationService {
         if (!dbInvitation || dbInvitation instanceof Error) {
           return of(null);
         }
+        const invitationEvents = publicEvents.map(event => event);
         this.dbInvitation = dbInvitation;
-        const eventObservables = Object.keys(this.dbInvitation.events).map(key => {
-          return this.afs.doc<Event>(`events/${key}`).snapshotChanges();
-        });
-        return combineLatest(eventObservables).pipe(
-          switchMap(eventSnapshots => {
-            const invitationEvents = publicEvents.map(event => event);
-            eventSnapshots.forEach(eventSnapshot => {
-              invitationEvents.push({
-                id: eventSnapshot.payload.id,
-                max: this.dbInvitation.events[eventSnapshot.payload.id],
-                rsvp: this.dbInvitation.rsvp ? this.dbInvitation.rsvp[eventSnapshot.payload.id] : null,
-                ...eventSnapshot.payload.data()
+        const invitation = {
+          name: this.dbInvitation.name,
+          phone: phone,
+          events: invitationEvents
+        };
+        if (dbInvitation.events && Object.keys(dbInvitation.events).length) {
+          const eventObservables = Object.keys(this.dbInvitation.events).map(key => {
+            return this.afs.doc<Event>(`events/${key}`).snapshotChanges();
+          });
+          return combineLatest(eventObservables).pipe(
+            switchMap(eventSnapshots => {
+              eventSnapshots.forEach(eventSnapshot => {
+                invitationEvents.push({
+                  id: eventSnapshot.payload.id,
+                  max: this.dbInvitation.events[eventSnapshot.payload.id],
+                  rsvp: this.dbInvitation.rsvp ? this.dbInvitation.rsvp[eventSnapshot.payload.id] : null,
+                  ...eventSnapshot.payload.data()
+                });
               });
-            });
-            invitationEvents.sort((a, b) => {
-              console.log(a);
-              return a.datetime.seconds - b.datetime.seconds;
-            });
-            const invitation = {
-              name: this.dbInvitation.name,
-              phone: phone,
-              events: invitationEvents
-            };
-            return of(invitation);
-          })
-        );
+              invitation.events = invitationEvents;
+              return of(sortEvents(invitation));
+            })
+          );
+        } else {
+          return of (sortEvents(invitation));
+        }
       })
     );
-    // this.invitation$.subscribe(i => {
-    //   console.log(i);
-    // });
     return this.invitation$;
   }
 

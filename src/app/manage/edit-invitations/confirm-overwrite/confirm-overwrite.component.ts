@@ -16,9 +16,7 @@ export class ConfirmOverwriteComponent implements OnInit {
 
   constructor(
     private manageInvitationService: ManageInvitationService
-  ) {
-    console.log();
-  }
+  ) { }
 
   ngOnInit() {
   }
