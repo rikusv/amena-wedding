@@ -53,6 +53,10 @@ export class InvitationService {
                 ...eventSnapshot.payload.data()
               });
             });
+            invitationEvents.sort((a, b) => {
+              console.log(a);
+              return a.datetime.seconds - b.datetime.seconds;
+            });
             const invitation = {
               name: this.dbInvitation.name,
               phone: phone,
