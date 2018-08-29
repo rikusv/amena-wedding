@@ -24,7 +24,12 @@ export class ConfirmOverwriteComponent implements OnInit {
   }
 
   confirmOverwrite() {
-    this.manageInvitationService.updateInvitations([this.invitation]);
+    this.manageInvitationService.updateInvitations([this.invitation])
+    .subscribe(success => {
+      if (success) {
+        this.manageInvitationService.added$.next(true);
+      }
+    });
     this.modalRef.close();
   }
 

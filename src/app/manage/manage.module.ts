@@ -12,6 +12,8 @@ import { FilterPipe } from './filter.pipe';
 import { ConfirmOverwriteComponent } from './edit-invitations/confirm-overwrite/confirm-overwrite.component';
 import { ManageBaseComponent } from './manage-base/manage-base.component';
 import { InvitationStatsComponent } from './invitation-stats/invitation-stats.component';
+import { EditInvitatationComponent } from './edit-invitations/edit-invitatation/edit-invitatation.component';
+import { EditInvitationComponent } from './edit-invitations/edit-invitation/edit-invitation.component';
 
 @NgModule({
   imports: [
@@ -29,9 +31,14 @@ import { InvitationStatsComponent } from './invitation-stats/invitation-stats.co
     FilterPipe,
     ConfirmOverwriteComponent,
     ManageBaseComponent,
-    InvitationStatsComponent
+    InvitationStatsComponent,
+    EditInvitatationComponent,
+    EditInvitationComponent
   ],
   providers: [AuthService],
-  entryComponents: [ConfirmOverwriteComponent]
+  entryComponents: [
+    ConfirmOverwriteComponent,
+    EditInvitationComponent
+  ]
 })
 export class ManageModule { }

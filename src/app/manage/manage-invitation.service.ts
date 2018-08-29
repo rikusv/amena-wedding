@@ -17,11 +17,11 @@ import { Event } from '../event';
 export class ManageInvitationService {
 
   private invitationCollection: AngularFirestoreCollection<DbInvitation>;
-  // private invitations$: Observable<DbInvitation[]>;
   private invitations$: BehaviorSubject<DbInvitation[] | null> = new BehaviorSubject(null);
   public searchApi = new SearchApi();
   private ready = false;
   public numberOfInvitations: number;
+  public added$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(
     private afs: AngularFirestore,

@@ -1,0 +1,50 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Edit invitation</h4>
+</div>
+<div class="modal-body">
+  <div class="input-group col-12 my-1">
+    <div class="input-group-prepend">
+      <span class="input-group-text">+</span>
+    </div>
+    <input type="tel" class="form-control" placeholder="Phone" [(ngModel)]="invitation.phone">
+    <input type="text" class="form-control" placeholder="Name" [(ngModel)]="invitation.name">
+  </div>
+  <div class="input-group col-12 my-1">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Surname</span>
+    </div>
+    <input type="text" class="form-control" placeholder="Surname" [(ngModel)]="invitation.surname">
+  </div>
+  <div class="input-group col-12 my-1">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Group</span>
+    </div>
+    <input type="text" class="form-control" placeholder="Group" [(ngModel)]="invitation.group">
+  </div>
+  <div class="input-group col-12 my-1" *ngFor="let event of rsvpEvents">
+    <div class="input-group-prepend">
+      <span class="input-group-text">{{ event.name }}</span>
+      <span class="input-group-text bg-light">Max</span>
+    </div>
+    <input type="number" class="form-control" [(ngModel)]="invitation.events[event.id]">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-light">RSVP</span>
+    </div>
+    <input type="number" class="form-control" [(ngModel)]="invitation.rsvp[event.id]">
+  </div>
+  <div class="col-12 my-1">
+    <div class="form-group form-check form-check-inline">
+      <input type="checkbox" class="form-check-input" [(ngModel)]="invitation.unlikely">
+      <label class="form-check-label">Unlikely</label>
+    </div>
+    <div class="form-group form-check form-check-inline">
+      <input type="checkbox" class="form-check-input" [(ngModel)]="invitation.wishlist">
+      <label class="form-check-label">Wishlist</label>
+    </div>
+  </div>
+  <div class="row">
+    <button type="button" class="col btn btn-primary mx-3" (click)="onChange()">Save</button>
+    <button type="button" class="col btn btn-secondary mx-3" (click)="onCancel()">Cancel</button>
+    <button type="button" class="col btn btn-danger mx-3" (click)="onDelete()">Delete</button>
+  </div>
+</div>

@@ -5,6 +5,7 @@ import { debounceTime, distinctUntilChanged, map, switchMap, startWith } from 'r
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { ConfirmOverwriteComponent } from './confirm-overwrite/confirm-overwrite.component';
+import { EditInvitationComponent } from './edit-invitation/edit-invitation.component';
 import { AuthService } from '../auth.service';
 import { ManageInvitationService } from '../manage-invitation.service';
 import { ManageEventService } from '../manage-event.service';
@@ -21,6 +22,7 @@ export class EditInvitationsComponent implements OnInit {
   invitations$: Observable<DbInvitation[]>;
   events$: Observable<Event[]>;
   events: Event[];
+  rsvpEvents: Event[];
   eventLookup$: Observable<{[id: string]: Event}>;
   searchResult$: Observable<string[]>;
   numberOfResults: number;
@@ -73,10 +75,16 @@ export class EditInvitationsComponent implements OnInit {
         this.events$.subscribe(events => {
           if (events) {
             this.events = events;
+            this.rsvpEvents = events.filter(event => !event.public);
             this.updateNewInvitationForm(events);
           }
         });
         this.eventLookup$ = this.manageEventService.getEventLookup$();
+      }
+    });
+    this.manageInvitationService.added$.subscribe(added => {
+      if (added) {
+        this.resetNewInvitationForm();
       }
     });
   }
@@ -115,43 +123,35 @@ export class EditInvitationsComponent implements OnInit {
     this.newInvitationForm.reset(this.initialNewInvitationFormValue);
   }
 
-  onChange(invitation: DbInvitation) {
-    if (invitation.key !== invitation.phone) {
-      this.manageInvitationService.searchApi.search(invitation.phone)
-      .then(results => {
-        if (results.indexOf(invitation.phone) !== -1) {
-          const modal = this.modalService.open(
-            ConfirmOverwriteComponent,
-            {
-              backdrop: 'static',
-              keyboard: false
-            }
-          );
-          const modalComponent = modal.componentInstance;
-          modalComponent.invitation = invitation;
-          modalComponent.modalRef = modal;
-        } else {
-          this.manageInvitationService.updateInvitations([invitation]);
-        }
-      });
-    } else {
-      this.manageInvitationService.updateInvitations([invitation]);
-    }
+  onInvitationPress(invitation: DbInvitation) {
+    const modal = this.modalService.open(
+      EditInvitationComponent
+    );
+    const modalComponent = modal.componentInstance;
+    modalComponent.modalRef = modal;
+    modalComponent.invitationBefore = invitation;
+    modalComponent.rsvpEvents = this.rsvpEvents;
   }
 
   onAdd() {
     const invitation = this.newInvitationForm.getRawValue();
-    this.manageInvitationService.updateInvitations([invitation])
-    .subscribe(success => {
-      if (success) {
-        this.resetNewInvitationForm();
+    this.manageInvitationService.searchApi.search(invitation.phone)
+    .then(results => {
+      if (results.indexOf(invitation.phone) !== -1) {
+        const modal = this.modalService.open(
+          ConfirmOverwriteComponent,
+          {
+            backdrop: 'static',
+            keyboard: false
+          }
+        );
+        const modalComponent = modal.componentInstance;
+        modalComponent.invitation = invitation;
+        modalComponent.modalRef = modal;
+      } else {
+        this.manageInvitationService.updateInvitations([invitation]);
       }
     });
-  }
-
-  onDelete(invitation: DbInvitation) {
-    invitation.delete = true;
-    this.manageInvitationService.updateInvitations([invitation]);
   }
 
   onSearch(input: string) {
