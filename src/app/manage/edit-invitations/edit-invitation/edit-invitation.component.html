@@ -1,14 +1,19 @@
-<div class="modal-header">
-  <h4 class="modal-title" id="modal-basic-title">Edit invitation</h4>
-  <a [class.disabled]="changeInvitationForm.touched" class="col btn btn-outline-primary mx-3" [href]="'https://api.whatsapp.com/send?phone=' + invitation.phone + '&text=You\'ve been invitated to Amena and Ferhat\'s wedding. Please get your invitation at http://wedding.hayat.co.za/invitation/' + invitation.phone" target="_blank">
-    Send
-  </a>
-</div>
-<div class="modal-body">
-  <ngb-alert *ngIf="changeInvitationForm.touched" type="warning" [dismissible]="false">
-    Invitation changed. Save or cancel before sending.
-  </ngb-alert>
-  <form [formGroup]="changeInvitationForm" (ngSubmit)="onChange()">
+<form [formGroup]="changeInvitationForm" (ngSubmit)="onChange()">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit invitation</h4>
+    <a [class.disabled]="changeInvitationForm.touched" class="col btn btn-outline-primary mx-3" [href]="'https://api.whatsapp.com/send?phone=' + invitation.phone + '&text=You\'ve been invitated to Amena and Ferhat\'s wedding. Please get your invitation at http://wedding.hayat.co.za/invitation/' + invitation.phone" target="_blank">
+      Send
+    </a>
+    <div class="form-group form-check form-check-inline">
+      <input type="checkbox" class="form-check-input" formControlName="invitationSent">
+      <label class="form-check-label">Sent?</label>
+    </div>
+  </div>
+  <div class="modal-body">
+    <ngb-alert *ngIf="changeInvitationForm.touched && !invitationSent" type="warning" [dismissible]="false">
+      Invitation changed. Save or cancel before sending.
+    </ngb-alert>
+
     <div class="input-group col-12 my-1">
       <div class="input-group-prepend">
         <span class="input-group-text">+</span>
@@ -53,10 +58,10 @@
         <label class="form-check-label">Wishlist</label>
       </div>
     </div>
-  </form>
-  <div class="row">
-    <button type="button" class="col btn btn-primary mx-3" (click)="onChange()">Save</button>
-    <button type="button" class="col btn btn-secondary mx-3" (click)="onCancel()">Cancel</button>
-    <button type="button" class="col btn btn-danger mx-3" (click)="onDelete()">Delete</button>
+    <div class="row">
+      <button type="button" class="col btn btn-primary mx-3" (click)="onChange()">Save</button>
+      <button type="button" class="col btn btn-secondary mx-3" (click)="onCancel()">Cancel</button>
+      <button type="button" class="col btn btn-danger mx-3" (click)="onDelete()">Delete</button>
+    </div>
   </div>
-</div>
+</form>

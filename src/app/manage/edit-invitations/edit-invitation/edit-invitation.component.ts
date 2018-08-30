@@ -18,7 +18,6 @@ export class EditInvitationComponent implements OnInit {
 
   modalRef: NgbModalRef;
   invitation: DbInvitation;
-  // invitationBefore: DbInvitation;
   rsvpEvents: Event[];
   changeInvitationForm: FormGroup;
 
@@ -29,16 +28,18 @@ export class EditInvitationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.copyObjectValues(this.invitationBefore, this.invitation);
     this.createForm();
   }
+
+  get invitationSent() { return this.changeInvitationForm.get('invitationSent'); }
 
   createForm() {
     const events = {};
     const rsvp = {};
     Object.keys(this.rsvpEvents).forEach(key => {
-      events[this.rsvpEvents[key].id] = this.invitation.events[key] || '';
-      rsvp[this.rsvpEvents[key].id] = this.invitation.rsvp[key] || '';
+      const eventId = this.rsvpEvents[key].id;
+      events[eventId] = this.invitation.events[eventId] || '';
+      rsvp[eventId] = this.invitation.rsvp[eventId] || '';
     });
     this.changeInvitationForm = this.fb.group({
       phone: [this.invitation.phone, [Validators.required, Validators.pattern]],
@@ -48,20 +49,10 @@ export class EditInvitationComponent implements OnInit {
       wishlist: [this.invitation.wishlist],
       unlikely: [this.invitation.unlikely],
       events: this.fb.group(events),
-      rsvp: this.fb.group(rsvp)
+      rsvp: this.fb.group(rsvp),
+      invitationSent: [this.invitation.invitationSent]
     });
   }
-
-  // copyObjectValues(from: object, to: object) {
-  //   Object.keys(from).forEach(key => {
-  //     if (typeof from[key] === 'object') {
-  //       to[key] = {};
-  //       this.copyObjectValues(from[key], to[key]);
-  //     } else {
-  //       to[key] = from[key];
-  //     }
-  //   });
-  // }
 
   onCancel() {
     this.modalRef.close();
