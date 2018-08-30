@@ -129,7 +129,7 @@ export class EditInvitationsComponent implements OnInit {
     );
     const modalComponent = modal.componentInstance;
     modalComponent.modalRef = modal;
-    modalComponent.invitationBefore = invitation;
+    modalComponent.invitation = invitation;
     modalComponent.rsvpEvents = this.rsvpEvents;
   }
 

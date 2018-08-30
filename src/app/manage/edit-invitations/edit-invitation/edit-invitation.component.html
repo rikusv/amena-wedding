@@ -1,47 +1,59 @@
 <div class="modal-header">
   <h4 class="modal-title" id="modal-basic-title">Edit invitation</h4>
+  <a [class.disabled]="changeInvitationForm.touched" class="col btn btn-outline-primary mx-3" [href]="'https://api.whatsapp.com/send?phone=' + invitation.phone + '&text=You\'ve been invitated to Amena and Ferhat\'s wedding. Please get your invitation at http://wedding.hayat.co.za/invitation/' + invitation.phone" target="_blank">
+    Send
+  </a>
 </div>
 <div class="modal-body">
-  <div class="input-group col-12 my-1">
-    <div class="input-group-prepend">
-      <span class="input-group-text">+</span>
+  <ngb-alert *ngIf="changeInvitationForm.touched" type="warning" [dismissible]="false">
+    Invitation changed. Save or cancel before sending.
+  </ngb-alert>
+  <form [formGroup]="changeInvitationForm" (ngSubmit)="onChange()">
+    <div class="input-group col-12 my-1">
+      <div class="input-group-prepend">
+        <span class="input-group-text">+</span>
+      </div>
+      <input type="tel" class="form-control" placeholder="Phone" formControlName="phone">
+      <input type="text" class="form-control" placeholder="Name" formControlName="name">
     </div>
-    <input type="tel" class="form-control" placeholder="Phone" [(ngModel)]="invitation.phone">
-    <input type="text" class="form-control" placeholder="Name" [(ngModel)]="invitation.name">
-  </div>
-  <div class="input-group col-12 my-1">
-    <div class="input-group-prepend">
-      <span class="input-group-text">Surname</span>
+    <div class="input-group col-12 my-1">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Surname</span>
+      </div>
+      <input type="text" class="form-control" placeholder="Surname" formControlName="surname">
     </div>
-    <input type="text" class="form-control" placeholder="Surname" [(ngModel)]="invitation.surname">
-  </div>
-  <div class="input-group col-12 my-1">
-    <div class="input-group-prepend">
-      <span class="input-group-text">Group</span>
+    <div class="input-group col-12 my-1">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Group</span>
+      </div>
+      <input type="text" class="form-control" placeholder="Group" formControlName="group">
     </div>
-    <input type="text" class="form-control" placeholder="Group" [(ngModel)]="invitation.group">
-  </div>
-  <div class="input-group col-12 my-1" *ngFor="let event of rsvpEvents">
-    <div class="input-group-prepend">
-      <span class="input-group-text">{{ event.name }}</span>
-      <span class="input-group-text bg-light">Max</span>
+    <div class="input-group col-12 my-1" *ngFor="let event of rsvpEvents">
+      <div class="input-group-prepend">
+        <span class="input-group-text">{{ event.name }}</span>
+        <span class="input-group-text bg-light">Max</span>
+      </div>
+      <ng-container formGroupName="events">
+        <input type="number" class="form-control" [formControlName]="event.id">
+      </ng-container>
+      <div class="input-group-prepend">
+        <span class="input-group-text bg-light">RSVP</span>
+      </div>
+      <ng-container formGroupName="rsvp">
+        <input type="number" class="form-control" [formControlName]="event.id">
+      </ng-container>
     </div>
-    <input type="number" class="form-control" [(ngModel)]="invitation.events[event.id]">
-    <div class="input-group-prepend">
-      <span class="input-group-text bg-light">RSVP</span>
+    <div class="col-12 my-1">
+      <div class="form-group form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" formControlName="unlikely">
+        <label class="form-check-label">Unlikely</label>
+      </div>
+      <div class="form-group form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" formControlName="wishlist">
+        <label class="form-check-label">Wishlist</label>
+      </div>
     </div>
-    <input type="number" class="form-control" [(ngModel)]="invitation.rsvp[event.id]">
-  </div>
-  <div class="col-12 my-1">
-    <div class="form-group form-check form-check-inline">
-      <input type="checkbox" class="form-check-input" [(ngModel)]="invitation.unlikely">
-      <label class="form-check-label">Unlikely</label>
-    </div>
-    <div class="form-group form-check form-check-inline">
-      <input type="checkbox" class="form-check-input" [(ngModel)]="invitation.wishlist">
-      <label class="form-check-label">Wishlist</label>
-    </div>
-  </div>
+  </form>
   <div class="row">
     <button type="button" class="col btn btn-primary mx-3" (click)="onChange()">Save</button>
     <button type="button" class="col btn btn-secondary mx-3" (click)="onCancel()">Cancel</button>
