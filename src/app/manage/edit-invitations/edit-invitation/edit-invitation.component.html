@@ -1,63 +1,117 @@
-<form [formGroup]="changeInvitationForm" (ngSubmit)="onChange()">
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Edit invitation</h4>
-    <a [class.disabled]="changeInvitationForm.touched" class="col btn btn-outline-primary mx-3" [href]="'https://api.whatsapp.com/send?phone=' + invitation?.phone + '&text=You\'ve been invitated to Amena and Ferhat\'s wedding. Please get your invitation at http://wedding.hayat.co.za/invitation/' + invitation?.phone" target="_blank">
-      Send
-    </a>
-    <div class="form-group form-check form-check-inline">
-      <input type="checkbox" class="form-check-input" formControlName="sent">
-      <label class="form-check-label">Sent?</label>
-    </div>
-  </div>
-  <div class="modal-body">
-    <div class="input-group col-12 my-1">
-      <div class="input-group-prepend">
-        <span class="input-group-text">+</span>
+<div class="container">
+
+  <form [formGroup]="changeInvitationForm" (ngSubmit)="onChange()">
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="phone" class="col-sm col-form-label">
+            Phone number
+          </label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">+</span>
+            </div>
+            <input id="phone" type="tel" class="form-control" placeholder="Phone" formControlName="phone">
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="group" class="col-sm col-form-label">
+            Group
+          </label>
+          <input id="group" type="text" class="form-control" placeholder="Group" formControlName="group">
+        </div>
       </div>
-      <input type="tel" class="form-control" placeholder="Phone" formControlName="phone">
-      <input type="text" class="form-control" placeholder="Name" formControlName="name">
-    </div>
-    <div class="input-group col-12 my-1">
-      <div class="input-group-prepend">
-        <span class="input-group-text">Surname</span>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="name" class="col-sm col-form-label">
+            Name
+          </label>
+          <input id="name" type="text" class="form-control" placeholder="Name" formControlName="name">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="surname" class="col-sm col-form-label">
+            Surname
+          </label>
+          <input id="surname" type="text" class="form-control" placeholder="Surname" formControlName="surname">
+        </div>
       </div>
-      <input type="text" class="form-control" placeholder="Surname" formControlName="surname">
-    </div>
-    <div class="input-group col-12 my-1">
-      <div class="input-group-prepend">
-        <span class="input-group-text">Group</span>
+
+      <div class="table-responsive">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th scope="col" class="w-50">Event</th>
+              <th scope="col">Invited</th>
+              <th scope="col">RSVP'd</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let event of eventsOnceFormReady()">
+              <td>{{ event.name }}</td>
+              <td formGroupName="events">
+                <input type="number" class="form-control" [formControlName]="event.id">
+              </td>
+              <td formGroupName="rsvp">
+                <input type="number" class="form-control" [formControlName]="event.id">
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <input type="text" class="form-control" placeholder="Group" formControlName="group">
-    </div>
-    <div class="input-group col-12 my-1" *ngFor="let event of eventsOnceFormReady()">
-      <div class="input-group-prepend">
-        <span class="input-group-text">{{ event.name }}</span>
-        <span class="input-group-text bg-light">Max</span>
+
+      <!-- <div class="input-group col-12 my-1" *ngFor="let event of eventsOnceFormReady()">
+        <div class="input-group-prepend">
+          <span class="input-group-text">{{ event.name }}</span>
+          <span class="input-group-text bg-light">Max</span>
+        </div>
+        <ng-container formGroupName="events">
+          <input type="number" class="form-control" [formControlName]="event.id">
+        </ng-container>
+        <div class="input-group-prepend">
+          <span class="input-group-text bg-light">RSVP</span>
+        </div>
+        <ng-container formGroupName="rsvp">
+          <input type="number" class="form-control" [formControlName]="event.id">
+        </ng-container>
+      </div> -->
+
+      <div class="form-row">
+        <div class="form-group form-check form-check-inline">
+          <input id="unlikely" class="form-check-input" type="checkbox" formControlName="unlikely">
+          <label for="unlikely" class="form-check-label">
+            Unlikely
+          </label>
+        </div>
+        <div class="form-group form-check form-check-inline">
+          <input id="wishlist" class="form-check-input" type="checkbox" formControlName="wishlist">
+          <label for="wishlist" class="form-check-label">
+            Wishlist
+          </label>
+        </div>
+        <div class="form-group form-check form-check-inline">
+          <input id="sent" class="form-check-input" type="checkbox" formControlName="sent">
+          <label for="sent" class="form-check-label">
+            Invitation Sent
+          </label>
+        </div>
       </div>
-      <ng-container formGroupName="events">
-        <input type="number" class="form-control" [formControlName]="event.id">
-      </ng-container>
-      <div class="input-group-prepend">
-        <span class="input-group-text bg-light">RSVP</span>
+
+      <div class="row justify-content-between">
+        <button type="button" class="col btn btn-primary mx-3" (click)="onChange()">
+          Save
+        </button>
+        <button type="button" class="col btn btn-secondary mx-3" (click)="onCancel()">
+          Cancel
+        </button>
+        <button type="button" class="col-2 btn btn-danger mx-3">
+          <i class="material-icons align-middle" (click)="onDelete()">
+            delete
+          </i>
+        </button>
+
       </div>
-      <ng-container formGroupName="rsvp">
-        <input type="number" class="form-control" [formControlName]="event.id">
-      </ng-container>
-    </div>
-    <div class="col-12 my-1">
-      <div class="form-group form-check form-check-inline">
-        <input type="checkbox" class="form-check-input" formControlName="unlikely">
-        <label class="form-check-label">Unlikely</label>
-      </div>
-      <div class="form-group form-check form-check-inline">
-        <input type="checkbox" class="form-check-input" formControlName="wishlist">
-        <label class="form-check-label">Wishlist</label>
-      </div>
-    </div>
-    <div class="row">
-      <button type="button" class="col btn btn-primary mx-3" (click)="onChange()">Save</button>
-      <button type="button" class="col btn btn-secondary mx-3" (click)="onCancel()">Cancel</button>
-      <button type="button" class="col btn btn-danger mx-3" (click)="onDelete()">Delete</button>
-    </div>
-  </div>
-</form>
+
+  </form>
+
+</div>

@@ -91,7 +91,8 @@ export class EditInvitationComponent implements OnInit {
 
   onChange() {
     const invitation = this.changeInvitationForm.getRawValue();
-    if (this.invitation.key !== invitation.phone) {
+    invitation.key = this.invitation.key;
+    if (invitation.key !== invitation.phone) {
       this.manageInvitationService.searchApi.search(invitation.phone)
       .then(results => {
         if (results.indexOf(invitation.phone) !== -1) {

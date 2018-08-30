@@ -78,21 +78,30 @@
         <th *ngFor="let event of rsvpEvents" scope="col">{{ event.name }}</th>
         <th scope="col">Wishlist</th>
         <th scope="col">Unlikely</th>
-        <th scope="col">Sent</th>
+        <th scope="col">Send</th>
       </tr>
     </thead>
     <tbody>
-      <tr [routerLink]="invitation.key" *ngFor="let invitation of (invitations$ | async | filter:(searchResult$ | async))">
-        <td>{{ invitation.phone }}</td>
-        <td>{{ invitation.name }}</td>
-        <td>{{ invitation.surname }}</td>
-        <td>{{ invitation.group }}</td>
-        <td *ngFor="let event of rsvpEvents">
+      <tr *ngFor="let invitation of (invitations$ | async | filter:(searchResult$ | async))">
+        <td [routerLink]="invitation.key">{{ invitation.phone }}</td>
+        <td [routerLink]="invitation.key">{{ invitation.name }}</td>
+        <td [routerLink]="invitation.key">{{ invitation.surname }}</td>
+        <td [routerLink]="invitation.key">{{ invitation.group }}</td>
+        <td [routerLink]="invitation.key" *ngFor="let event of rsvpEvents">
           {{ invitation.rsvp[event.id] }} / {{ invitation.events[event.id] }}
         </td>
-        <td>{{ invitation.wishlist == true ? 'X' : '' }}</td>
-        <td>{{ invitation.unlikely == true ? 'X' : '' }}</td>
-        <td>{{ invitation.sent == true ? 'X' : '' }}</td>
+        <td [routerLink]="invitation.key">{{ invitation.wishlist == true ? 'X' : '' }}</td>
+        <td [routerLink]="invitation.key">{{ invitation.unlikely == true ? 'X' : '' }}</td>
+        <td>
+          <a *ngIf="!invitation.sent" [href]="'https://api.whatsapp.com/send?phone=' + invitation?.phone + '&text=You\'ve been invitated to Amena and Ferhat\'s wedding. Please get your invitation at http://wedding.hayat.co.za/invitation/' + invitation?.phone" target="_blank">
+            <i class="material-icons align-middle text-primary">
+              send
+            </i>
+          </a>
+          <i *ngIf="invitation.sent" class="material-icons align-middle text-secondary">
+            done
+          </i>
+        </td>
       </tr>
     </tbody>
   </table>
