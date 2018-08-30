@@ -4,7 +4,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { ManageBaseComponent } from './manage-base/manage-base.component';
 import { LoginComponent } from './login/login.component';
 import { EditInvitationsComponent } from './edit-invitations/edit-invitations.component';
+import { EditInvitationComponent } from './edit-invitations/edit-invitation/edit-invitation.component';
 import { InvitationStatsComponent } from './invitation-stats/invitation-stats.component';
+
+import { EditInvitationResolverService } from './edit-invitation-resolver.service';
 
 const routes: Routes = [
   {
@@ -13,7 +16,20 @@ const routes: Routes = [
     children: [
       {
         path: 'edit',
-        component: EditInvitationsComponent
+        children: [
+          {
+            path: '',
+            component: EditInvitationsComponent
+          },
+          {
+            path: ':invitation',
+            component: EditInvitationComponent,
+            canDeactivate: [],
+            resolve: {
+              invitation: EditInvitationResolverService
+            }
+          }
+        ]
       },
       {
         path: 'stats',

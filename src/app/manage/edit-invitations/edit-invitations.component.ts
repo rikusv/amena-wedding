@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Observable, Subject, from } from 'rxjs';
+import { Observable, Subject, from, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, switchMap, startWith } from 'rxjs/operators';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
@@ -17,8 +17,11 @@ import { Event } from '../../event';
   templateUrl: './edit-invitations.component.html',
   styleUrls: ['./edit-invitations.component.css']
 })
-export class EditInvitationsComponent implements OnInit {
+export class EditInvitationsComponent implements OnInit, OnDestroy {
 
+  userSubscription: Subscription;
+  eventsSubscription: Subscription;
+  addSubScription: Subscription;
   invitations$: Observable<DbInvitation[]>;
   events$: Observable<Event[]>;
   events: Event[];
@@ -68,25 +71,31 @@ export class EditInvitationsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.user$.subscribe(user => {
+    this.userSubscription = this.authService.user$.subscribe(user => {
       if (user) {
         this.invitations$ = this.manageInvitationService.getInvitations$();
         this.events$ = this.manageEventService.getEvents$();
-        this.events$.subscribe(events => {
+        this.eventsSubscription = this.events$.subscribe(events => {
           if (events) {
             this.events = events;
-            this.rsvpEvents = events.filter(event => !event.public);
+            this.rsvpEvents = this.manageEventService.rsvpEvents;
             this.updateNewInvitationForm(events);
           }
         });
         this.eventLookup$ = this.manageEventService.getEventLookup$();
       }
     });
-    this.manageInvitationService.added$.subscribe(added => {
+    this.addSubScription = this.manageInvitationService.added$.subscribe(added => {
       if (added) {
         this.resetNewInvitationForm();
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
+    this.eventsSubscription.unsubscribe();
+    this.addSubScription.unsubscribe();
   }
 
   objectKeys(object: {}) {
@@ -100,7 +109,7 @@ export class EditInvitationsComponent implements OnInit {
   eventsOnceFormReady() {
     if (this.newInvitationForm.get('events') &&
     Object.keys(this.newInvitationForm.get('events').value).length) {
-      return this.events;
+      return this.rsvpEvents;
     }
   }
 

@@ -18,6 +18,7 @@ export class ManageInvitationService {
 
   private invitationCollection: AngularFirestoreCollection<DbInvitation>;
   private invitations$: BehaviorSubject<DbInvitation[] | null> = new BehaviorSubject(null);
+  public invitations: {[key: string]: DbInvitation} = {};
   public searchApi = new SearchApi();
   private ready = false;
   public numberOfInvitations: number;
@@ -64,8 +65,19 @@ export class ManageInvitationService {
         });
       })
     ).subscribe(invitations => {
-     this.invitations$.next(invitations);
+      invitations.forEach(invitation => {
+        this.invitations[invitation.key] = invitation;
+      });
+      this.invitations$.next(invitations);
     });
+  }
+
+  getInvitation$(key: string): Observable<DbInvitation> {
+    if (this.invitations) {
+      return of(this.invitations[key]);
+    } else {
+      return null;
+    }
   }
 
   updateInvitations(invitations: DbInvitation[]): Observable<boolean> {

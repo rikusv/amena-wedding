@@ -1,16 +1,16 @@
 <form [formGroup]="changeInvitationForm" (ngSubmit)="onChange()">
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Edit invitation</h4>
-    <a [class.disabled]="changeInvitationForm.touched" class="col btn btn-outline-primary mx-3" [href]="'https://api.whatsapp.com/send?phone=' + invitation.phone + '&text=You\'ve been invitated to Amena and Ferhat\'s wedding. Please get your invitation at http://wedding.hayat.co.za/invitation/' + invitation.phone" target="_blank">
+    <a [class.disabled]="changeInvitationForm.touched" class="col btn btn-outline-primary mx-3" [href]="'https://api.whatsapp.com/send?phone=' + invitation?.phone + '&text=You\'ve been invitated to Amena and Ferhat\'s wedding. Please get your invitation at http://wedding.hayat.co.za/invitation/' + invitation?.phone" target="_blank">
       Send
     </a>
     <div class="form-group form-check form-check-inline">
-      <input type="checkbox" class="form-check-input" formControlName="invitationSent">
+      <input type="checkbox" class="form-check-input" formControlName="sent">
       <label class="form-check-label">Sent?</label>
     </div>
   </div>
   <div class="modal-body">
-    <ngb-alert *ngIf="changeInvitationForm.touched && !invitationSent" type="warning" [dismissible]="false">
+    <ngb-alert *ngIf="changeInvitationForm.touched && !sent" type="warning" [dismissible]="false">
       Invitation changed. Save or cancel before sending.
     </ngb-alert>
 
@@ -33,7 +33,7 @@
       </div>
       <input type="text" class="form-control" placeholder="Group" formControlName="group">
     </div>
-    <div class="input-group col-12 my-1" *ngFor="let event of rsvpEvents">
+    <div class="input-group col-12 my-1" *ngFor="let event of eventsOnceFormReady()">
       <div class="input-group-prepend">
         <span class="input-group-text">{{ event.name }}</span>
         <span class="input-group-text bg-light">Max</span>

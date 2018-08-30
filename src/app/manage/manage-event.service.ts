@@ -16,6 +16,7 @@ export class ManageEventService {
   public eventLookup$: BehaviorSubject<{[id: string]: Event}> = new BehaviorSubject({});
   public eventLookup: {[id: string]: Event};
   public events: Event[];
+  public rsvpEvents: Event[];
   private ready = false;
 
   constructor(
@@ -41,6 +42,7 @@ export class ManageEventService {
         ...action.payload.doc.data()
       })))
     ).subscribe(events => {
+      this.rsvpEvents = events.filter(event => !event.public);
       this.events$.next(events);
       this.events = events;
       const eventLookup = {};
