@@ -237,9 +237,29 @@ export class ManageInvitationService {
           Object.keys(row).forEach(key => {
             const parts = key.split(' ');
             if (parts.length === 1) {
-              invitation[key] = row[key] === 'true' ? true : row[key];
+              let value;
+              switch (key) {
+                case 'key':
+                  value = Number(row[key]);
+                  break;
+                case 'phone':
+                  value = Number(row[key]);
+                  break;
+                case 'unlikely':
+                  value = row[key] === 'true' ? true : false;
+                  break;
+                case 'wishlist':
+                  value = row[key] === 'true' ? true : false;
+                  break;
+                case 'sent':
+                  value = row[key] === 'true' ? true : false;
+                  break;
+                default:
+                  value = row[key];
+              }
+              invitation[key] = value;
             } else {
-              invitation[parts[0]][parts[1]] = row[key];
+              invitation[parts[0]][parts[1]] = row[key] > 0 ? Number(row[key]) : '';
             }
           });
           this.invitationsForUpload.push(invitation);
