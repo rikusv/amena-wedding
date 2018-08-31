@@ -219,6 +219,7 @@ export class ManageInvitationService {
     this.papa.parse(file, {
       header: true,
       complete: (result, _) => {
+        this.invitationsForUpload = [];
         if (result.errors.length) {
           this.messageService.sendMessage({
             type: 'danger',
