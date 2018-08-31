@@ -236,7 +236,7 @@ export class ManageInvitationService {
           Object.keys(row).forEach(key => {
             const parts = key.split(' ');
             if (parts.length === 1) {
-              invitation[key] = row[key];
+              invitation[key] = row[key] === 'true' ? true : row[key];
             } else {
               invitation[parts[0]][parts[1]] = row[key];
             }
