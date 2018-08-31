@@ -38,6 +38,7 @@
             <th *ngFor="let event of rsvpEvents" scope="col">{{ event.name }}</th>
             <th scope="col">Wishlist</th>
             <th scope="col">Unlikely</th>
+            <th scope="col">Sent</th>
           </tr>
         </thead>
         <tbody>
@@ -51,6 +52,7 @@
             </td>
             <td>{{ invitation.wishlist == true ? 'X' : '' }}</td>
             <td>{{ invitation.unlikely == true ? 'X' : '' }}</td>
+            <td>{{ invitation.sent == true ? 'X' : '' }}</td>
           </tr>
         </tbody>
       </table>

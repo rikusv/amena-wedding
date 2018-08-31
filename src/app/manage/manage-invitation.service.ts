@@ -162,7 +162,8 @@ export class ManageInvitationService {
         'name',
         'surname',
         'unlikely',
-        'wishlist'
+        'wishlist',
+        'sent'
       ],
       [
         'Unique identifier. Do not edit.',
@@ -170,6 +171,7 @@ export class ManageInvitationService {
         'Any group name',
         'Name invitation will be addressed to',
         'Family name',
+        'true or blank',
         'true or blank',
         'true or blank'
       ]
@@ -188,8 +190,9 @@ export class ManageInvitationService {
         this.invitations[key].group,
         this.invitations[key].name,
         this.invitations[key].surname,
-        this.invitations[key].unlikely.toString(),
-        this.invitations[key].wishlist.toString()
+        this.invitations[key].unlikely ? this.invitations[key].unlikely.toString() : '',
+        this.invitations[key].wishlist ? this.invitations[key].wishlist.toString() : '',
+        this.invitations[key].sent ? this.invitations[key].sent.toString() : ''
       ];
       events.forEach(event => {
         const invited = this.invitations[key].events && this.invitations[key].events[event.id] ?
