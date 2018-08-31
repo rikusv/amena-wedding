@@ -39,7 +39,7 @@ export class EditInvitationsComponent implements OnInit, OnDestroy {
     unlikely: [false]
   });
   initialNewInvitationFormValue: DbInvitation = this.newInvitationForm.value;
-  whatsappMessage = window.encodeURIComponent(`Salaams. Greetings.
+  whatsappMessage = encodeURIComponent(`Salaams. Greetings.
 
 In the hope of saving some trees, we have decided to send you an invitation to Amena and Ferhat's wedding in digital form.
 We hope that you will accept this as a personal invitation.
