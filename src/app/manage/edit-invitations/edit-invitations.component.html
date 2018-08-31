@@ -63,8 +63,18 @@
         Name is <strong>required</strong>.
       </ngb-alert>
     </p>
-    <button type="submit" [disabled]="!newInvitationForm.valid" class="btn btn-primary btn-block my-3">Add Invitation</button>
+
   </form>
+
+  <div class="row justify-content-between my-3">
+    <button [disabled]="!newInvitationForm.valid" class="col-sm btn btn-primary mx-3 my-1" (click)="onAdd()">Add Invitation</button>
+    <div class="col-sm custom-file mx-3 my-1">
+      <input type="file" class="custom-file-input" id="file" (change)="onFileUpload($event.target.files[0])">
+      <label class="custom-file-label" for="file">CSV upload</label>
+    </div>
+    <a class="col-sm btn btn-outline-secondary mx-3 my-1" (click)="onFileDownload($event)">Download</a>
+  </div>
+
 </div>
 
 <div class="table-responsive">

@@ -6,6 +6,7 @@ import { LoginComponent } from './login/login.component';
 import { EditInvitationsComponent } from './edit-invitations/edit-invitations.component';
 import { EditInvitationComponent } from './edit-invitations/edit-invitation/edit-invitation.component';
 import { InvitationStatsComponent } from './invitation-stats/invitation-stats.component';
+import { UploadInvitationsComponent } from './upload-invitations/upload-invitations.component';
 
 import { EditInvitationResolverService } from './edit-invitation-resolver.service';
 
@@ -30,6 +31,10 @@ const routes: Routes = [
             }
           }
         ]
+      },
+      {
+        path: 'upload',
+        component: UploadInvitationsComponent
       },
       {
         path: 'stats',

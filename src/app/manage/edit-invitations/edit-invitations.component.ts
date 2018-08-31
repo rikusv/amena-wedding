@@ -166,4 +166,12 @@ export class EditInvitationsComponent implements OnInit, OnDestroy {
   onSearch(input: string) {
   }
 
+  onFileUpload(file: File) {
+    this.manageInvitationService.uploadCsv(file);
+  }
+
+  onFileDownload(event: MouseEvent) {
+    this.manageInvitationService.downloadCsv(event.target);
+  }
+
 }

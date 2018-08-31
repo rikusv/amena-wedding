@@ -1,0 +1,65 @@
+<div class="container-fluid">
+
+  <ng-container *ngIf="errors.length">
+
+    <ngb-alert type="danger" [dismissible]="false">
+      Errors occurred! Data may be corrupted if you upload.
+    </ngb-alert>
+
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Row</th>
+            <th scope="col">Detail</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table-danger" *ngFor="let error of errors">
+            <td>{{ error.row }}</td>
+            <td>{{ error.message }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </ng-container>
+
+  <ng-container *ngIf="invitations.length">
+
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Phone</th>
+            <th scope="col">Name</th>
+            <th scope="col">Surname</th>
+            <th scope="col">Group</th>
+            <th *ngFor="let event of rsvpEvents" scope="col">{{ event.name }}</th>
+            <th scope="col">Wishlist</th>
+            <th scope="col">Unlikely</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let invitation of invitations">
+            <td>{{ invitation.phone }}</td>
+            <td>{{ invitation.name }}</td>
+            <td>{{ invitation.surname }}</td>
+            <td>{{ invitation.group }}</td>
+            <td *ngFor="let event of rsvpEvents">
+              {{ invitation.rsvp[event.id] }} / {{ invitation.events[event.id] }}
+            </td>
+            <td>{{ invitation.wishlist == true ? 'X' : '' }}</td>
+            <td>{{ invitation.unlikely == true ? 'X' : '' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button type="button" class="btn btn-danger" (click)="onOverwriteInvitations()">
+      Upload and Overwrite
+    </button>
+
+  </ng-container>
+
+</div>

@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable, combineLatest, of, from, BehaviorSubject } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import SearchApi from 'js-worker-search';
+import { PapaParseService, PapaParseError } from 'ngx-papaparse';
 
 import { ManageEventService } from './manage-event.service';
 import { MessageService } from '../message.service';
@@ -23,11 +25,15 @@ export class ManageInvitationService {
   private ready = false;
   public numberOfInvitations: number;
   public added$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public invitationsForUpload: DbInvitation[] = [];
+  public uploadErrors: PapaParseError[] = [];
 
   constructor(
+    private router: Router,
     private afs: AngularFirestore,
     private manageEventService: ManageEventService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private papa: PapaParseService
   ) { }
 
   getInvitations$(): Observable<DbInvitation[]> {
@@ -145,6 +151,98 @@ export class ManageInvitationService {
       });
       return false;
     }));
+  }
+
+  downloadCsv(link: any) {
+    const rows = [
+      [
+        'key',
+        'phone',
+        'group',
+        'name',
+        'surname',
+        'unlikely',
+        'wishlist'
+      ],
+      [
+        'Unique identifier. Do not edit.',
+        'E.g. \'27825555555\'',
+        'Any group name',
+        'Name invitation will be addressed to',
+        'Family name',
+        'true or blank',
+        'true or blank'
+      ]
+    ];
+    const events = this.manageEventService.rsvpEvents;
+    events.forEach(event => {
+      rows[0].push(`events ${event.id}`);
+      rows[0].push(`rsvp ${event.id}`);
+      rows[1].push(`Invited: ${event.name}`);
+      rows[1].push(`RVSP: ${event.name}`);
+    });
+    Object.keys(this.invitations).forEach(key => {
+      const row = [
+        this.invitations[key].key.toString(),
+        this.invitations[key].phone.toString(),
+        this.invitations[key].group,
+        this.invitations[key].name,
+        this.invitations[key].surname,
+        this.invitations[key].unlikely.toString(),
+        this.invitations[key].wishlist.toString()
+      ];
+      events.forEach(event => {
+        const invited = this.invitations[key].events && this.invitations[key].events[event.id] ?
+        this.invitations[key].events[event.id].toString() || '' :
+        '';
+        const rsvp = this.invitations[key].rsvp && this.invitations[key].rsvp[event.id] ?
+        this.invitations[key].rsvp[event.id].toString() || '' :
+        '';
+        row.push(invited);
+        row.push(rsvp);
+      });
+      rows.push(row);
+    });
+    const csvContent = this.papa.unparse(rows);
+
+    const blob = new Blob([csvContent], {type: 'data:text/csv'});
+    const url = window.URL.createObjectURL(blob);
+    link.href = url;
+    link.target = '_blank';
+    link.download = 'rsvp.csv';
+  }
+
+  uploadCsv(file: File) {
+    this.papa.parse(file, {
+      header: true,
+      complete: (result, _) => {
+        if (result.errors.length) {
+          this.messageService.sendMessage({
+            type: 'danger',
+            text: 'Errors occurred!'
+          });
+          this.uploadErrors = result.errors;
+        } else {
+          this.uploadErrors = [];
+        }
+        const rows = result.data.slice(1);
+        rows.forEach(row => {
+          const invitation = new DbInvitation();
+          invitation.events = {};
+          invitation.rsvp = {};
+          Object.keys(row).forEach(key => {
+            const parts = key.split(' ');
+            if (parts.length === 1) {
+              invitation[key] = row[key];
+            } else {
+              invitation[parts[0]][parts[1]] = row[key];
+            }
+          });
+          this.invitationsForUpload.push(invitation);
+        });
+        this.router.navigate(['/manage/upload']);
+      }
+    });
   }
 
   getInvitationStats(): Observable<any> {

@@ -14,6 +14,7 @@ import { ManageBaseComponent } from './manage-base/manage-base.component';
 import { InvitationStatsComponent } from './invitation-stats/invitation-stats.component';
 import { EditInvitationComponent } from './edit-invitations/edit-invitation/edit-invitation.component';
 import { EditInvitationResolverService } from './edit-invitation-resolver.service';
+import { UploadInvitationsComponent } from './upload-invitations/upload-invitations.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { EditInvitationResolverService } from './edit-invitation-resolver.servic
     ConfirmOverwriteComponent,
     ManageBaseComponent,
     InvitationStatsComponent,
-    EditInvitationComponent
+    EditInvitationComponent,
+    UploadInvitationsComponent
   ],
   providers: [
     AuthService,
