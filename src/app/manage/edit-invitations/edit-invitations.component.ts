@@ -39,6 +39,16 @@ export class EditInvitationsComponent implements OnInit, OnDestroy {
     unlikely: [false]
   });
   initialNewInvitationFormValue: DbInvitation = this.newInvitationForm.value;
+  whatsappMessage = window.encodeURIComponent(`Salaams. Greetings.
+
+In the hope of saving some trees, we have decided to send you an invitation to Amena and Ferhat's wedding in digital form.
+We hope that you will accept this as a personal invitation.
+
+Please take note of the RSVP button which you can click to send your RSVP.  We hope that you can join us!
+
+Please feel free to message me on this number if you have any difficulty opening the link or require any assistance.
+
+Please find your invitation by clicking here: `);
 
   constructor(
     private fb: FormBuilder,
