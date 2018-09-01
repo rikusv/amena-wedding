@@ -40,16 +40,6 @@ export class EditInvitationsComponent implements OnInit, OnDestroy {
     unlikely: [false]
   });
   initialNewInvitationFormValue: DbInvitation = this.newInvitationForm.value;
-  whatsappMessage = encodeURIComponent(`Salaams. Greetings.
-
-In the hope of saving some trees, we have decided to send you an invitation to Amena and Ferhat's wedding in digital form.
-We hope that you will accept this as a personal invitation.
-
-Please take note of the RSVP button which you can click to send your RSVP.  We hope that you can join us!
-
-Please feel free to message me on this number if you have any difficulty opening the link or require any assistance.
-
-Please find your invitation by clicking here: `);
 
   constructor(
     private route: ActivatedRoute,
@@ -154,6 +144,28 @@ Please find your invitation by clicking here: `);
     this.newInvitationForm.reset(this.initialNewInvitationFormValue);
   }
 
+  getWhatsappMessage(key: string) {
+    return encodeURIComponent(
+`Salaams. Greetings.
+
+In the hope of saving some trees, we have decided to send you an invitation to \
+Amena and Ferhat's wedding in digital form. We hope that you will accept this \
+as a personal invitation.
+
+Please take note of the RSVP button which you can click to send your RSVP.  We \
+hope that you can join us!
+
+Please feel free to message me on this number if you have any difficulty opening \
+the link or require any assistance.
+
+Please find your invitation by clicking here: https://wedding.hayat.co.za/invitation/${key}
+
+P.S. If I am not in your contact list, you may not see the link (the text in \
+blue) - you can either add me to your list or just send a reply to this message \
+and the link should activate.`
+);
+  }
+
   onInvitationPress(invitation: DbInvitation) {
     const modal = this.modalService.open(
       EditInvitationComponent
@@ -183,6 +195,11 @@ Please find your invitation by clicking here: `);
         this.manageInvitationService.updateInvitations([invitation]);
       }
     });
+  }
+
+  onToggleInvitationSent(invitation: DbInvitation) {
+    invitation.sent = !invitation.sent;
+    this.manageInvitationService.updateInvitations([invitation]);
   }
 
   onSearch(input: string) {

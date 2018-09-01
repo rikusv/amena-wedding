@@ -88,6 +88,7 @@
         <th *ngFor="let event of rsvpEvents" scope="col">{{ event.name }}</th>
         <th scope="col">Wishlist</th>
         <th scope="col">Unlikely</th>
+        <th scope="col">Sent</th>
         <th scope="col">Send</th>
       </tr>
     </thead>
@@ -103,14 +104,23 @@
         <td [routerLink]="invitation.key">{{ invitation.wishlist == true ? 'X' : '' }}</td>
         <td [routerLink]="invitation.key">{{ invitation.unlikely == true ? 'X' : '' }}</td>
         <td>
-          <a *ngIf="!invitation.sent" [href]="'https://api.whatsapp.com/send?phone=' + invitation?.phone + '&text=' + whatsappMessage + ' https://wedding.hayat.co.za/invitation/' + invitation?.phone" target="_blank">
+          <button *ngIf="invitation.sent" type="button" class="btn btn-link" (click)="onToggleInvitationSent(invitation)">
+            <i class="material-icons align-middle text-primary">
+              check_box
+            </i>
+          </button>
+          <button *ngIf="!invitation.sent" type="button" class="btn btn-link" (click)="onToggleInvitationSent(invitation)">
+            <i class="material-icons align-middle text-primary">
+              check_box_outline_blank
+            </i>
+          </button>
+        </td>
+        <td>
+          <a class="btn btn-lnk col" *ngIf="!invitation.sent" [href]="'https://api.whatsapp.com/send?phone=' + invitation?.phone + '&text=' + getWhatsappMessage(invitation.key)" target="_blank">
             <i class="material-icons align-middle text-primary">
               send
             </i>
           </a>
-          <i *ngIf="invitation.sent" class="material-icons align-middle text-secondary">
-            done
-          </i>
         </td>
       </tr>
     </tbody>
