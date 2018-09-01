@@ -60,6 +60,7 @@ export class ManageInvitationService {
             ${invitation.name}
             ${invitation.phone}
             ${invitation.group}
+            ${invitation.surname}
             ${invitation.wishlist ? 'wishlistOnly' : ''}
             ${invitation.unlikely ? 'unlikelyOnly' : ''}
             `
