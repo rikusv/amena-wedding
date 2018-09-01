@@ -158,7 +158,8 @@ hope that you can join us!
 Please feel free to message me on this number if you have any difficulty opening \
 the link or require any assistance.
 
-Please find your invitation by clicking here: https://wedding.hayat.co.za/invitation/${key}
+Please find your invitation by clicking here:
+https://wedding.hayat.co.za/invitation/${invitation.key}
 
 P.S. If I am not in your contact list, you may not see the link (the text in \
 blue) - you can either add me to your list or just send a reply to this message \
