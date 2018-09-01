@@ -1,63 +1,67 @@
-<div class="container" *ngFor="let id of objectKeys((stats$ | async))">
+<ng-container *ngFor="let id of objectKeys((stats$ | async))">
   <h3 class="mt-3">{{ (stats$ | async)[id].name }}</h3>
-  <table class="table ">
-  <thead>
-    <tr>
-      <th scope="col"></th>
-      <th scope="col">Invited</th>
-      <th scope="col">RSVP'd</th>
-      <th scope="col">Pending</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">All</th>
-      <td>
-        {{ (stats$ | async)[id].invited }}
-      </td>
-      <td>
-        {{ (stats$ | async)[id].rsvp }}
-      </td>
-      <td>
-        {{ (stats$ | async)[id].pending }}
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Unlikely</th>
-      <td>
-        {{ (stats$ | async)[id].unlikely.invited }}
-      </td>
-      <td>
-        {{ (stats$ | async)[id].unlikely.rsvp }}
-      </td>
-      <td>
-        {{ (stats$ | async)[id].unlikely.pending }}
-      </td>
-    </tr>
-    <tr *ngFor="let group of objectKeys((stats$ | async)[id].group)">
-      <th scope="row">{{ group ? group : 'No group' }}</th>
-      <td>
-        {{ (stats$ | async)[id].group[group].invited }}
-      </td>
-      <td>
-        {{ (stats$ | async)[id].group[group].rsvp }}
-      </td>
-      <td>
-        {{ (stats$ | async)[id].group[group].pending }}
-      </td>
-    </tr>
-    <tr class="text-muted">
-      <th scope="row">Wishlist</th>
-      <td>
-        {{ (stats$ | async)[id].wishlist.invited }}
-      </td>
-      <td [class.text-danger]="(stats$ | async)[id].wishlist.rsvp != 0">
-        {{ (stats$ | async)[id].wishlist.rsvp }}
-      </td>
-      <td>
-        {{ (stats$ | async)[id].wishlist.pending }}
-      </td>
-    </tr>
-  </tbody>
-</table>
-</div>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Invited</th>
+          <th scope="col">RSVP'd</th>
+          <th scope="col">Pending</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">All</th>
+          <td>
+            {{ (stats$ | async)[id].invited }}
+          </td>
+          <td>
+            {{ (stats$ | async)[id].rsvp }}
+          </td>
+          <td>
+            {{ (stats$ | async)[id].pending }}
+          </td>
+        </tr>
+        <tr *ngFor="let group of objectKeys((stats$ | async)[id].group)" [routerLink]="['/manage', 'edit', {group: group}]" class="table-secondary">
+          <th scope="row">
+            {{ group ? group : 'No group' }}
+          </th>
+          <td>
+            {{ (stats$ | async)[id].group[group].invited }}
+          </td>
+          <td>
+            {{ (stats$ | async)[id].group[group].rsvp }}
+          </td>
+          <td>
+            {{ (stats$ | async)[id].group[group].pending }}
+          </td>
+        </tr>
+        <tr [routerLink]="['/manage', 'edit', {unlikely: true}]">
+          <th scope="row">Unlikely</th>
+          <td>
+            {{ (stats$ | async)[id].unlikely.invited }}
+          </td>
+          <td>
+            {{ (stats$ | async)[id].unlikely.rsvp }}
+          </td>
+          <td>
+            {{ (stats$ | async)[id].unlikely.pending }}
+          </td>
+        </tr>
+        <tr [routerLink]="['/manage', 'edit', {wishlist: true}]" class="text-muted">
+          <th scope="row">Wishlist</th>
+          <td>
+            {{ (stats$ | async)[id].wishlist.invited }}
+          </td>
+          <td [class.text-danger]="(stats$ | async)[id].wishlist.rsvp != 0">
+            {{ (stats$ | async)[id].wishlist.rsvp }}
+          </td>
+          <td>
+            {{ (stats$ | async)[id].wishlist.pending }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-container>

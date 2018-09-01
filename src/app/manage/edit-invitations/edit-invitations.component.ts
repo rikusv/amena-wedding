@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable, Subject, from, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, switchMap, startWith } from 'rxjs/operators';
@@ -51,6 +52,7 @@ Please feel free to message me on this number if you have any difficulty opening
 Please find your invitation by clicking here: `);
 
   constructor(
+    private route: ActivatedRoute,
     private fb: FormBuilder,
     public authService: AuthService,
     private manageInvitationService: ManageInvitationService,
@@ -90,6 +92,7 @@ Please find your invitation by clicking here: `);
             this.events = events;
             this.rsvpEvents = this.manageEventService.rsvpEvents;
             this.updateNewInvitationForm(events);
+            this.setNewInvitationFormValues();
           }
         });
         this.eventLookup$ = this.manageEventService.getEventLookup$();
@@ -136,6 +139,15 @@ Please find your invitation by clicking here: `);
     this.newInvitationForm.controls.events = this.fb.group(eventMap);
     this.newInvitationForm.controls.rsvp = this.fb.group(eventMap);
     this.initialNewInvitationFormValue = this.newInvitationForm.value;
+  }
+
+  setNewInvitationFormValues() {
+    const data = this.route.snapshot.params;
+    Object.keys(data).forEach(property => {
+      this.newInvitationForm.get(property).setValue(
+        data[property]
+      );
+    });
   }
 
   resetNewInvitationForm() {
