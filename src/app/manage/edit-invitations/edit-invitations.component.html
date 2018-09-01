@@ -116,7 +116,7 @@
           </button>
         </td>
         <td>
-          <a class="btn btn-lnk col" *ngIf="!invitation.sent" [href]="'https://api.whatsapp.com/send?phone=' + invitation?.phone + '&text=' + getWhatsappMessage(invitation.key)" target="_blank">
+          <a class="btn btn-lnk col" *ngIf="!invitation.sent" [href]="'https://api.whatsapp.com/send?phone=' + invitation?.phone + '&text=' + getWhatsappMessage(invitation)" target="_blank" (click)="onConfirmInvitationSent(invitation)">
             <i class="material-icons align-middle text-primary">
               send
             </i>

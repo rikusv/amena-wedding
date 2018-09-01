@@ -15,6 +15,7 @@ import { InvitationStatsComponent } from './invitation-stats/invitation-stats.co
 import { EditInvitationComponent } from './edit-invitations/edit-invitation/edit-invitation.component';
 import { EditInvitationResolverService } from './edit-invitation-resolver.service';
 import { UploadInvitationsComponent } from './upload-invitations/upload-invitations.component';
+import { ConfirmSentComponent } from './edit-invitations/confirm-sent/confirm-sent.component';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { UploadInvitationsComponent } from './upload-invitations/upload-invitati
     ManageBaseComponent,
     InvitationStatsComponent,
     EditInvitationComponent,
-    UploadInvitationsComponent
+    UploadInvitationsComponent,
+    ConfirmSentComponent
   ],
   providers: [
     AuthService,
@@ -42,7 +44,8 @@ import { UploadInvitationsComponent } from './upload-invitations/upload-invitati
   ],
   entryComponents: [
     ConfirmOverwriteComponent,
-    EditInvitationComponent
+    EditInvitationComponent,
+    ConfirmSentComponent
   ]
 })
 export class ManageModule { }

@@ -7,6 +7,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { ConfirmOverwriteComponent } from './confirm-overwrite/confirm-overwrite.component';
 import { EditInvitationComponent } from './edit-invitation/edit-invitation.component';
+import { ConfirmSentComponent } from './confirm-sent/confirm-sent.component';
 import { AuthService } from '../auth.service';
 import { ManageInvitationService } from '../manage-invitation.service';
 import { ManageEventService } from '../manage-event.service';
@@ -31,6 +32,7 @@ export class EditInvitationsComponent implements OnInit, OnDestroy {
   searchResult$: Observable<string[]>;
   numberOfResults: number;
   confirmOverwriteModal: NgbModalRef;
+  confirmSentModal: NgbModalRef;
   newInvitationForm = this.fb.group({
     phone: ['', [Validators.required, Validators.pattern]],
     name: ['', Validators.required],
@@ -144,9 +146,9 @@ export class EditInvitationsComponent implements OnInit, OnDestroy {
     this.newInvitationForm.reset(this.initialNewInvitationFormValue);
   }
 
-  getWhatsappMessage(key: string) {
+  getWhatsappMessage(invitation: DbInvitation) {
     return encodeURIComponent(
-`Salaams. Greetings.
+`Salaams ${invitation.name}. Greetings.
 
 In the hope of saving some trees, we have decided to send you an invitation to \
 Amena and Ferhat's wedding in digital form. We hope that you will accept this \
@@ -201,6 +203,15 @@ and the link should activate.`
   onToggleInvitationSent(invitation: DbInvitation) {
     invitation.sent = !invitation.sent;
     this.manageInvitationService.updateInvitations([invitation]);
+  }
+
+  onConfirmInvitationSent(invitation: DbInvitation) {
+    const modal = this.modalService.open(
+      ConfirmSentComponent
+    );
+    const modalComponent = modal.componentInstance;
+    modalComponent.invitation = invitation;
+    modalComponent.modalRef = modal;
   }
 
   onSearch(input: string) {
