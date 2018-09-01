@@ -55,7 +55,7 @@ export class EditInvitationsComponent implements OnInit, OnDestroy {
       debounceTime(500),
       map((value: DbInvitation) => {
         return `
-        ${value.name} ${value.phone} ${value.group}
+        ${value.name} ${value.phone} ${value.group} ${value.surname}
         ${value.wishlist ? 'wishlistOnly' : ''}
         ${value.unlikely ? 'unlikelyOnly' : ''}
         `;
