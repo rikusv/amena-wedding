@@ -24,22 +24,24 @@
         </div>
         <input type="text" class="form-control" placeholder="Group" formControlName="group">
       </div>
-      <div class="input-group col-md-6 col-12 my-1" *ngFor="let event of eventsOnceFormReady()">
-        <div class="input-group-prepend">
-          <span class="input-group-text">{{ event.name }}</span>
-          <span class="input-group-text bg-light">Max</span>
+      <ng-container *ngFor="let event of eventsOnceFormReady()">
+        <label class="ml-3 mt-1" [for]="'event' + event.id">{{ event.name }}</label>
+        <div [id]="'event' + event.id" class="input-group col-md-6 col-12 mb-1">
+          <div class="input-group-prepend">
+            <span class="input-group-text bg-light">Max</span>
+          </div>
+          <ng-container formGroupName="events">
+            <input type="number" class="form-control" [formControlName]="event.id">
+          </ng-container>
+          <div class="input-group-prepend">
+            <span class="input-group-text bg-light">RSVP</span>
+          </div>
+          <ng-container formGroupName="rsvp">
+            <input type="number" class="form-control" [formControlName]="event.id">
+          </ng-container>
         </div>
-        <ng-container formGroupName="events">
-          <input type="number" class="form-control" [formControlName]="event.id">
-        </ng-container>
-        <div class="input-group-prepend">
-          <span class="input-group-text bg-light">RSVP</span>
-        </div>
-        <ng-container formGroupName="rsvp">
-          <input type="number" class="form-control" [formControlName]="event.id">
-        </ng-container>
-      </div>
-      <div class="col-md-6 col-12 my-1">
+      </ng-container>
+      <div class="col-12 my-1">
         <div class="form-group form-check form-check-inline">
           <input type="checkbox" class="form-check-input" formControlName="unlikely">
           <label class="form-check-label">Unlikely</label>
