@@ -6,6 +6,7 @@
         <tr>
           <th scope="col"></th>
           <th scope="col">Invited</th>
+          <th scope="col">Sent</th>
           <th scope="col">Coming</th>
           <th scope="col">Not coming</th>
           <th scope="col">Pending</th>
@@ -16,6 +17,9 @@
           <th scope="row">All</th>
           <td>
             {{ (stats$ | async)[id].invited }}
+          </td>
+          <td>
+            {{ (stats$ | async)[id].sent }}
           </td>
           <td>
             {{ (stats$ | async)[id].rsvp }}
@@ -35,6 +39,9 @@
             {{ (stats$ | async)[id].group[group].invited }}
           </td>
           <td>
+            {{ (stats$ | async)[id].group[group].sent }}
+          </td>
+          <td>
             {{ (stats$ | async)[id].group[group].rsvp }}
           </td>
           <td>
@@ -50,6 +57,9 @@
             {{ (stats$ | async)[id].unlikely.invited }}
           </td>
           <td>
+            {{ (stats$ | async)[id].unlikely.sent }}
+          </td>
+          <td>
             {{ (stats$ | async)[id].unlikely.rsvp }}
           </td>
           <td>
@@ -63,6 +73,9 @@
           <th scope="row">Wishlist</th>
           <td>
             {{ (stats$ | async)[id].wishlist.invited }}
+          </td>
+          <td [class.text-danger]="(stats$ | async)[id].wishlist.sent != 0">
+            {{ (stats$ | async)[id].wishlist.sent }}
           </td>
           <td [class.text-danger]="(stats$ | async)[id].wishlist.rsvp != 0">
             {{ (stats$ | async)[id].wishlist.rsvp }}

@@ -291,16 +291,19 @@ export class ManageInvitationService {
               name: this.manageEventService.eventLookup ?
               this.manageEventService.eventLookup[event.id].name : event.id,
               invited: 0,
+              sent: 0,
               rsvp: 0,
               pending: 0,
               group: {},
               unlikely: {
                 invited: 0,
+                sent: 0,
                 rsvp: 0,
                 pending: 0
               },
               wishlist: {
                 invited: 0,
+                sent: 0,
                 rsvp: 0,
                 pending: 0
               }
@@ -309,30 +312,37 @@ export class ManageInvitationService {
         });
         invitations.forEach(invitation => {
           Object.keys(invitation.events).forEach(eventId => {
+            const invited = invitation.events[eventId];
+            const rsvpd = invitation.rsvp[eventId];
             if (invitation.wishlist) {
-              data[eventId].wishlist.invited += invitation.wishlist ? invitation.events[eventId] || 0 : 0;
-              data[eventId].wishlist.rsvp += invitation.wishlist ? invitation.rsvp[eventId] || 0 : 0;
+              data[eventId].wishlist.invited += invitation.wishlist ? invited || 0 : 0;
+              data[eventId].wishlist.sent += invitation.wishlist && invitation.sent ? invited || 0 : 0;
+              data[eventId].wishlist.rsvp += invitation.wishlist ? rsvpd || 0 : 0;
               data[eventId].wishlist.pending += invitation.wishlist ?
-              (typeof invitation.rsvp[eventId] !== 'number' ? invitation.events[eventId] : 0) : 0;
+              (typeof rsvpd !== 'number' ? invited : 0) : 0;
             } else {
-              data[eventId].invited += invitation.events[eventId] || 0;
-              data[eventId].rsvp += invitation.rsvp[eventId] || 0;
-              data[eventId].pending += typeof invitation.rsvp[eventId] !== 'number' ? invitation.events[eventId] : 0;
-              data[eventId].unlikely.invited += invitation.unlikely ? invitation.events[eventId] || 0 : 0;
-              data[eventId].unlikely.rsvp += invitation.unlikely ? invitation.rsvp[eventId] || 0 : 0;
-              data[eventId].unlikely.pending += invitation.unlikely ? (typeof invitation.rsvp[eventId] !== 'number' ?
-                invitation.events[eventId] : 0) : 0;
+              data[eventId].invited += invited || 0;
+              data[eventId].sent += invitation.sent ? invited || 0 : 0;
+              data[eventId].rsvp += rsvpd || 0;
+              data[eventId].pending += typeof rsvpd !== 'number' ? invited : 0;
+              data[eventId].unlikely.invited += invitation.unlikely ? invited || 0 : 0;
+              data[eventId].unlikely.sent += invitation.unlikely && invitation.sent ? invited || 0 : 0;
+              data[eventId].unlikely.rsvp += invitation.unlikely ? rsvpd || 0 : 0;
+              data[eventId].unlikely.pending += invitation.unlikely ? (typeof rsvpd !== 'number' ?
+                invited : 0) : 0;
               if (!data[eventId].group[invitation.group]) {
                 data[eventId].group[invitation.group] = {
                   invited: 0,
+                  sent: 0,
                   rsvp: 0,
                   pending: 0
                 };
               }
-              data[eventId].group[invitation.group].invited += invitation.events[eventId] || 0;
-              data[eventId].group[invitation.group].rsvp += invitation.rsvp[eventId] || 0;
-              data[eventId].group[invitation.group].pending += typeof invitation.rsvp[eventId] !== 'number' ?
-              invitation.events[eventId] : 0;
+              data[eventId].group[invitation.group].invited += invited || 0;
+              data[eventId].group[invitation.group].sent += invitation.sent ? invited || 0 : 0;
+              data[eventId].group[invitation.group].rsvp += rsvpd || 0;
+              data[eventId].group[invitation.group].pending += typeof rsvpd !== 'number' ?
+              invited : 0;
             }
           });
         });
