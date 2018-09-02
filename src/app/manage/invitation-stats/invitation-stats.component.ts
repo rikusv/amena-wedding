@@ -41,4 +41,8 @@ export class InvitationStatsComponent implements OnInit {
     }
   }
 
+  notComing(record: any) {
+    return record.invited - record.rsvp - record.pending;
+  }
+
 }
