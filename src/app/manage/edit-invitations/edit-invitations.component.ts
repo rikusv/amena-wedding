@@ -30,7 +30,9 @@ export class EditInvitationsComponent implements OnInit, OnDestroy {
   rsvpEvents: Event[];
   eventLookup$: Observable<{[id: string]: Event}>;
   searchInput: string;
-  sortProperty$: BehaviorSubject<string> = new BehaviorSubject(null);
+  sorter$: BehaviorSubject<{
+    property: string, ascending: boolean
+  }> = new BehaviorSubject(null);
   sortState = {};
   searchResult$: Observable<string[]>;
   numberOfResults: number;
@@ -109,7 +111,7 @@ export class EditInvitationsComponent implements OnInit, OnDestroy {
 
   onSort(property: string) {
     this.sortState[property] = this.sortState[property] ? !this.sortState[property] : true;
-    this.sortProperty$.next({
+    this.sorter$.next({
       property: property,
       ascending: this.sortState[property]
     });

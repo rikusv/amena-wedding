@@ -99,7 +99,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let invitation of (invitations$ | async | filter:(searchResult$ | async) | sort:(sortProperty$ | async))">
+      <tr *ngFor="let invitation of (invitations$ | async | filter:(searchResult$ | async) | sort:(sorter$ | async))">
         <td [routerLink]="invitation.key">{{ invitation.phone }}</td>
         <td [routerLink]="invitation.key">{{ invitation.name }}</td>
         <td [routerLink]="invitation.key">{{ invitation.surname }}</td>

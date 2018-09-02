@@ -15,11 +15,9 @@ export class SortPipe implements PipeTransform {
       case 'boolean':
         return items.sort((a, b) => a[sorter.property] ?
         (sorter.ascending ? 1 : -1) : (sorter.ascending ? -1 : 1));
-        break;
       case 'string':
         return items.sort((a, b) => a[sorter.property] < b[sorter.property] ?
         (sorter.ascending ? -1 : 1) : (sorter.ascending ? 1 : -1));
-        break;
       default:
         return items;
     }
