@@ -88,13 +88,43 @@
     <thead>
       <tr>
         <th scope="col">Phone</th>
-        <th scope="col" (click)="onSort('name')">Name</th>
-        <th scope="col" (click)="onSort('surname')">Surname</th>
-        <th scope="col" (click)="onSort('group')">Group</th>
+        <th scope="col" (click)="onSort('name')" class="no-break">
+          Name
+          <i class="small material-icons align-middle">
+            sort
+          </i>
+        </th>
+        <th scope="col" (click)="onSort('surname')" class="no-break">
+          Surname
+          <i class="small material-icons align-middle">
+            sort
+          </i>
+        </th>
+        <th scope="col" (click)="onSort('group')" class="no-break">
+          Group
+          <i class="small material-icons align-middle">
+            sort
+          </i>
+        </th>
         <th *ngFor="let event of rsvpEvents" scope="col">{{ event.name }}</th>
-        <th scope="col" (click)="onSort('wishlist')">Wishlist</th>
-        <th scope="col" (click)="onSort('unlikely')">Unlikely</th>
-        <th scope="col" (click)="onSort('sent')">Sent</th>
+        <th scope="col" (click)="onSort('wishlist')">
+          Wishlist
+          <i class="small material-icons align-middle">
+            sort
+          </i>
+        </th>
+        <th scope="col" (click)="onSort('unlikely')">
+          Unlikely
+          <i class="small material-icons align-middle">
+            sort
+          </i>
+        </th>
+        <th scope="col" (click)="onSort('sent')">
+          Sent
+          <i class="small material-icons align-middle">
+            sort
+          </i>
+        </th>
         <th scope="col">Send</th>
       </tr>
     </thead>
