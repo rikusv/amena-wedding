@@ -107,19 +107,19 @@
           </i>
         </th>
         <th *ngFor="let event of rsvpEvents" scope="col">{{ event.name }}</th>
-        <th scope="col" (click)="onSort('wishlist')">
+        <th scope="col" (click)="onSort('wishlist')" class="no-break">
           Wishlist
           <i class="small material-icons align-middle">
             sort
           </i>
         </th>
-        <th scope="col" (click)="onSort('unlikely')">
+        <th scope="col" (click)="onSort('unlikely')" class="no-break">
           Unlikely
           <i class="small material-icons align-middle">
             sort
           </i>
         </th>
-        <th scope="col" (click)="onSort('sent')">
+        <th scope="col" (click)="onSort('sent')" class="no-break">
           Sent
           <i class="small material-icons align-middle">
             sort
