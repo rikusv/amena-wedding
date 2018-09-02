@@ -16,7 +16,7 @@ export class DbInvitation {
     [id: string]: number
   };
   rsvp: {
-    [id: string]: number
+    [id: string]: number | ''
   };
   sent: boolean;
   delete?: boolean;
