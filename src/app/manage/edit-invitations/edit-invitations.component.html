@@ -88,18 +88,18 @@
     <thead>
       <tr>
         <th scope="col">Phone</th>
-        <th scope="col">Name</th>
-        <th scope="col">Surname</th>
-        <th scope="col">Group</th>
+        <th scope="col" (click)="onSort('name')">Name</th>
+        <th scope="col" (click)="onSort('surname')">Surname</th>
+        <th scope="col" (click)="onSort('group')">Group</th>
         <th *ngFor="let event of rsvpEvents" scope="col">{{ event.name }}</th>
-        <th scope="col">Wishlist</th>
-        <th scope="col">Unlikely</th>
-        <th scope="col">Sent</th>
+        <th scope="col" (click)="onSort('wishlist')">Wishlist</th>
+        <th scope="col" (click)="onSort('unlikely')">Unlikely</th>
+        <th scope="col" (click)="onSort('sent')">Sent</th>
         <th scope="col">Send</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let invitation of (invitations$ | async | filter:(searchResult$ | async))">
+      <tr *ngFor="let invitation of (invitations$ | async | filter:(searchResult$ | async) | sort:(sortProperty$ | async))">
         <td [routerLink]="invitation.key">{{ invitation.phone }}</td>
         <td [routerLink]="invitation.key">{{ invitation.name }}</td>
         <td [routerLink]="invitation.key">{{ invitation.surname }}</td>

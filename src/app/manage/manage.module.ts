@@ -16,6 +16,7 @@ import { EditInvitationComponent } from './edit-invitations/edit-invitation/edit
 import { EditInvitationResolverService } from './edit-invitation-resolver.service';
 import { UploadInvitationsComponent } from './upload-invitations/upload-invitations.component';
 import { ConfirmSentComponent } from './edit-invitations/confirm-sent/confirm-sent.component';
+import { SortPipe } from './sort.pipe';
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import { ConfirmSentComponent } from './edit-invitations/confirm-sent/confirm-se
     InvitationStatsComponent,
     EditInvitationComponent,
     UploadInvitationsComponent,
-    ConfirmSentComponent
+    ConfirmSentComponent,
+    SortPipe
   ],
   providers: [
     AuthService,

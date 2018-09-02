@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Observable, Subject, from, Subscription } from 'rxjs';
+import { Observable, Subject, from, Subscription, BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, switchMap, startWith } from 'rxjs/operators';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
@@ -29,6 +29,9 @@ export class EditInvitationsComponent implements OnInit, OnDestroy {
   events: Event[];
   rsvpEvents: Event[];
   eventLookup$: Observable<{[id: string]: Event}>;
+  searchInput: string;
+  sortProperty$: BehaviorSubject<string> = new BehaviorSubject(null);
+  sortState = {};
   searchResult$: Observable<string[]>;
   numberOfResults: number;
   confirmOverwriteModal: NgbModalRef;
@@ -61,6 +64,7 @@ export class EditInvitationsComponent implements OnInit, OnDestroy {
         `;
       }),
       switchMap(input => {
+        this.searchInput = input;
         return from(
           this.manageInvitationService.searchApi.search(input)
         ).pipe(
@@ -101,6 +105,14 @@ export class EditInvitationsComponent implements OnInit, OnDestroy {
     this.userSubscription.unsubscribe();
     this.eventsSubscription.unsubscribe();
     this.addSubScription.unsubscribe();
+  }
+
+  onSort(property: string) {
+    this.sortState[property] = this.sortState[property] ? !this.sortState[property] : true;
+    this.sortProperty$.next({
+      property: property,
+      ascending: this.sortState[property]
+    });
   }
 
   objectKeys(object: {}) {
