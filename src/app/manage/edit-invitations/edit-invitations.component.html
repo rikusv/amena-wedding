@@ -106,7 +106,12 @@
             sort
           </i>
         </th>
-        <th *ngFor="let event of rsvpEvents" scope="col">{{ event.name }}</th>
+        <th *ngFor="let event of rsvpEvents" scope="col" (click)="onSort('rsvp/' + event.id)">
+          {{ event.name }}
+          <i class="small material-icons align-middle">
+            sort
+          </i>
+        </th>
         <th scope="col" (click)="onSort('wishlist')" class="no-break">
           Wishlist
           <i class="small material-icons align-middle">
