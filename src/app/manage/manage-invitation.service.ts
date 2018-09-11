@@ -103,7 +103,7 @@ export class ManageInvitationService {
         }
       });
       Object.keys(invitation.rsvp).forEach(rsvp => {
-        if (invitation.rsvp[rsvp] > 0) {
+        if (invitation.rsvp[rsvp] !== '') {
           payload.rsvp[rsvp] = invitation.rsvp[rsvp];
         }
       });

@@ -72,6 +72,8 @@ export class EditInvitationComponent implements OnInit {
       const eventId = this.rsvpEvents[key].id;
       events[eventId] = this.invitation.events[eventId] || '';
       rsvp[eventId] = this.invitation.rsvp[eventId] || '';
+      rsvp[eventId] = typeof this.invitation.rsvp[eventId] === 'undefined' ?
+      '' : this.invitation.rsvp[eventId];
     });
     this.changeInvitationForm.setValue(invitation);
     this.changeInvitationForm.controls.events = this.fb.group(events);
