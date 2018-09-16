@@ -199,7 +199,7 @@ export class ManageInvitationService {
         const invited = this.invitations[key].events && this.invitations[key].events[event.id] ?
         this.invitations[key].events[event.id].toString() || '' :
         '';
-        const rsvp = this.invitations[key].rsvp && this.invitations[key].rsvp[event.id] ?
+        const rsvp = this.invitations[key].rsvp && (typeof this.invitations[key].rsvp[event.id] !== 'undefined') ?
         this.invitations[key].rsvp[event.id].toString() || '' :
         '';
         row.push(invited);
@@ -260,7 +260,7 @@ export class ManageInvitationService {
               }
               invitation[key] = value;
             } else {
-              invitation[parts[0]][parts[1]] = row[key] > 0 ? Number(row[key]) : '';
+              invitation[parts[0]][parts[1]] = row[key] !== '' ? Number(row[key]) : '';
             }
           });
           this.invitationsForUpload.push(invitation);
