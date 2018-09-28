@@ -199,7 +199,8 @@ export class ManageInvitationService {
         const invited = this.invitations[key].events && this.invitations[key].events[event.id] ?
         this.invitations[key].events[event.id].toString() || '' :
         '';
-        const rsvp = this.invitations[key].rsvp && (typeof this.invitations[key].rsvp[event.id] !== 'undefined') ?
+        const rsvp = this.invitations[key].rsvp &&
+        this.invitations[key].rsvp[event.id] != null ?
         this.invitations[key].rsvp[event.id].toString() || '' :
         '';
         row.push(invited);
@@ -207,6 +208,7 @@ export class ManageInvitationService {
       });
       rows.push(row);
     });
+
     const csvContent = this.papa.unparse(rows);
 
     const blob = new Blob([csvContent], {type: 'data:text/csv'});
